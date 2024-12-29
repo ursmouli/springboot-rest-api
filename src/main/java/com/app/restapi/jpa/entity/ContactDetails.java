@@ -1,5 +1,6 @@
 package com.app.restapi.jpa.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -51,7 +53,9 @@ public class ContactDetails implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+		return authorities;
 	}
 	
 	@Override

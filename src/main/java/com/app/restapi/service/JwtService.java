@@ -1,11 +1,14 @@
 package com.app.restapi.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -61,9 +64,14 @@ public class JwtService {
 	}
 
 	private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expirationTime) {
+		List<String> roles = new ArrayList<>();
+		for (GrantedAuthority authority :  userDetails.getAuthorities()) {
+			roles.add(authority.getAuthority());
+		}
 		return Jwts
 				.builder()
 				.setClaims(extraClaims)
+				.claim("roles", roles)
 				.setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
