@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserResource {
 	
 	@GetMapping("/welcome")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	// @PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole(T(com.app.restapi.dto.Roles).ROLE_USER.name())")
 	public String getWelcomeMsg() {
 		return "Welcome";
 	}
 
 	
 	@GetMapping("/all")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole(T(com.app.restapi.dto.Roles).ROLE_ADMIN.name())")
 	public String getInfo() {
 		return "info";
 	}

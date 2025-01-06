@@ -1,0 +1,1 @@
+ALTER TABLE student ADD COLUMN registration_number VARCHAR(20) UNIQUE NOT NULL;

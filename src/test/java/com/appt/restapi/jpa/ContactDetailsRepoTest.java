@@ -29,6 +29,6 @@ public class ContactDetailsRepoTest {
 		ContactDetails result = contactDetailsRepository.save(contactDetails);
 		
 		assertNotNull(result);
-		assertEquals("mail@mail.com", result.getEmail());
+		assertTrue("mail@mail.com".equals(result.getEmail()));
 	}
 }

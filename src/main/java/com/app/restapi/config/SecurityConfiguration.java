@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.app.restapi.dto.Roles;
+
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableMethodSecurity
@@ -38,7 +40,7 @@ public class SecurityConfiguration {
     		.authorizeHttpRequests((req) -> 
     			req
     				.requestMatchers("/auth/**").permitAll()
-    				.requestMatchers(HttpMethod.POST, "/api/roles").hasAnyAuthority("ROLE_ADMIN")
+    				.requestMatchers(HttpMethod.POST, "/api/roles").hasAnyAuthority(Roles.ROLE_ADMIN.name())
     				.anyRequest().authenticated()
     		)
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
