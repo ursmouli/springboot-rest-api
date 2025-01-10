@@ -2,6 +2,8 @@ package com.app.restapi.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,15 +12,21 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
 
         // TODO send this stack trace to an observability tool
-        exception.printStackTrace();
+        // exception.printStackTrace();
+        log.error("Error: ", exception);
 
         if (exception instanceof BadCredentialsException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
@@ -56,6 +64,8 @@ public class GlobalExceptionHandler {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "Unknown internal server error.");
         }
+
+        errorDetail.setProperty("datetime", LocalDateTime.now());
 
         return errorDetail;
     }

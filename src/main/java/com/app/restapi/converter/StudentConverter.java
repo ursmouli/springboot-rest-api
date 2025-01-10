@@ -2,6 +2,7 @@ package com.app.restapi.converter;
 
 import com.app.restapi.dto.GuardianDto;
 import com.app.restapi.dto.StudentDto;
+import com.app.restapi.jpa.entity.Guardian;
 import com.app.restapi.jpa.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,33 @@ public class StudentConverter {
 
     @Autowired
     private GuardianConverter guardianConverter;
+
+    public Student toEntity(StudentDto dto) {
+        Student entity = new Student()
+                .setId(dto.getId())
+                .setFirstName(dto.getFirstName())
+                .setMiddleName(dto.getMiddleName())
+                .setLastName(dto.getLastName())
+                .setRegistrationNumber(dto.getRegistrationNumber())
+                .setDob(dto.getDob());
+
+        if (dto.getPermanentAddress() != null) {
+            entity.setPermanentAddress(addressConverter.toEntity(dto.getPermanentAddress()));
+        }
+        if (dto.getResidentialAddress() != null) {
+            entity.setResidentialAddress(addressConverter.toEntity(dto.getResidentialAddress()));
+        }
+
+        if (!dto.getGuardians().isEmpty()) {
+            List<Guardian> guardiansList = new ArrayList<>();
+            dto.getGuardians().forEach(guardianDto -> {
+                guardiansList.add(guardianConverter.toEntity(guardianDto));
+            });
+            entity.setGuardians(guardiansList);
+        }
+
+        return entity;
+    }
 
     public StudentDto toDto(Student entity) {
         StudentDto dto = new StudentDto()

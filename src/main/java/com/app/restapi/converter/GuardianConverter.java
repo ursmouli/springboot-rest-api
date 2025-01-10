@@ -7,6 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class GuardianConverter {
 
+    public Guardian toEntity(GuardianDto dto) {
+        return new Guardian()
+                .setId(dto.getId())
+                .setName(dto.getName())
+                .setEmail(dto.getEmail())
+                .setPhone(dto.getPhone())
+                .setRelation(dto.getRelation());
+    }
+
     public GuardianDto toDto(Guardian entity) {
         return new GuardianDto()
                 .setId(entity.getId())
