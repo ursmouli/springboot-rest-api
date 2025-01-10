@@ -2,7 +2,6 @@ package com.app.restapi.service;
 
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +15,11 @@ import com.app.restapi.jpa.entity.ContactDetails;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	private ContactDetailsRepository contactDetailsRepository;
+	private final ContactDetailsRepository contactDetailsRepository;
+
+	public MyUserDetailsService(ContactDetailsRepository contactDetailsRepository) {
+		this.contactDetailsRepository = contactDetailsRepository;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

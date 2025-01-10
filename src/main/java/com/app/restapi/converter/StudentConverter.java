@@ -4,7 +4,6 @@ import com.app.restapi.dto.GuardianDto;
 import com.app.restapi.dto.StudentDto;
 import com.app.restapi.jpa.entity.Guardian;
 import com.app.restapi.jpa.entity.Student;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,11 +12,14 @@ import java.util.List;
 @Component
 public class StudentConverter {
 
-    @Autowired
-    private AddressConverter addressConverter;
+    private final AddressConverter addressConverter;
+    private final GuardianConverter guardianConverter;
 
-    @Autowired
-    private GuardianConverter guardianConverter;
+    public StudentConverter(AddressConverter addressConverter, GuardianConverter guardianConverter) {
+        this.addressConverter = addressConverter;
+        this.guardianConverter = guardianConverter;
+    }
+
 
     public Student toEntity(StudentDto dto) {
         Student entity = new Student()

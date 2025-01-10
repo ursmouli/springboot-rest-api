@@ -14,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.app.restapi.jpa.repo.ContactDetailsRepository;
 
 @Configuration
-public class ApplicatoinConfiguration {
+public class ApplicationConfiguration {
 	
-	private ContactDetailsRepository contactDetailsRepository;
+	private final ContactDetailsRepository contactDetailsRepository;
 	
-	public ApplicatoinConfiguration(ContactDetailsRepository contactDetailsRepository) {
+	public ApplicationConfiguration(ContactDetailsRepository contactDetailsRepository) {
 		this.contactDetailsRepository = contactDetailsRepository;
 	}
 	

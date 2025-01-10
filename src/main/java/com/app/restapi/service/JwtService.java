@@ -23,12 +23,17 @@ import java.security.Key;
 @Service
 public class JwtService {
 
-	@Value("${security.jwt.secret-key}")
-	private String jwtSecretKey;
-	
-	@Value("${security.jwt.expiration-time}")
-	private long jwtExpiration;
-	
+	private final String jwtSecretKey;
+	private final long jwtExpiration;
+
+	public JwtService(
+			@Value("${security.jwt.secret-key}") String jwtSecretKey,
+			@Value("${security.jwt.expiration-time}") long jwtExpiration
+	) {
+		this.jwtSecretKey = jwtSecretKey;
+		this.jwtExpiration = jwtExpiration;
+	}
+
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}

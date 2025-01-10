@@ -3,7 +3,6 @@ package com.app.restapi.resource;
 import java.util.Set;
 
 import com.app.restapi.dto.RoleDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ import com.app.restapi.service.RoleService;
 @RequestMapping("/api/roles")
 public class RoleResource {
 
-	@Autowired
-	private RoleService roleService;
+	private final RoleService roleService;
+
+	public RoleResource(RoleService roleService) {
+		this.roleService = roleService;
+	}
 	
 	@PostMapping
     public ResponseEntity<RoleDto> createRole(@RequestBody RoleDto roleDto) {

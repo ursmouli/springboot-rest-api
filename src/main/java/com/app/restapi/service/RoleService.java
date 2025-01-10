@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.app.restapi.dto.RoleDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,8 +14,11 @@ import com.app.restapi.jpa.entity.Role;
 @Service
 public class RoleService {
 
-	@Autowired
-	private RoleRepository roleRepository;
+	private final RoleRepository roleRepository;
+
+	public RoleService(RoleRepository roleRepository) {
+		this.roleRepository = roleRepository;
+	}
 	
 	public RoleDto createRole(RoleDto roleDto) {
 		if (roleRepository.findByName(roleDto.getName()).isPresent()) {

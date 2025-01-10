@@ -1,21 +1,14 @@
 package com.app.restapi.service;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.app.restapi.converter.AddressConverter;
-import com.app.restapi.converter.GuardianConverter;
 import com.app.restapi.converter.StudentConverter;
 import com.app.restapi.dto.StudentDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.restapi.exceptions.StudentNotFoundException;
 import com.app.restapi.jpa.repo.StudentRepository;
-import com.app.restapi.jpa.entity.Guardian;
 import com.app.restapi.jpa.entity.Student;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,17 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudentService {
 	private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
-	@Autowired
-	private StudentRepository studentRepository;
+	private final StudentRepository studentRepository;
+	private final StudentConverter studentConverter;
 
-	@Autowired
-	private AddressConverter addressConverter;
-
-	@Autowired
-	private StudentConverter studentConverter;
-
-	@Autowired
-	private GuardianConverter guardianConverter;
+	public StudentService(StudentRepository studentRepository, StudentConverter studentConverter) {
+		this.studentRepository = studentRepository;
+		this.studentConverter = studentConverter;
+	}
 
 	@Transactional
 	public StudentDto saveStudent(StudentDto studentDto) {
