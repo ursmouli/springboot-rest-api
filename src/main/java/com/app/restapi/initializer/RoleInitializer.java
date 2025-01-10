@@ -25,7 +25,7 @@ public class RoleInitializer implements CommandLineRunner {
 
         // Check if roles already exist and create them if they don't
         for (String roleName : roles) {
-            if (!roleRepository.findByName(roleName).isPresent()) {
+            if (roleRepository.findByName(roleName).isEmpty()) {
                 Role role = new Role();
                 role.setName(roleName);
                 roleRepository.save(role);
