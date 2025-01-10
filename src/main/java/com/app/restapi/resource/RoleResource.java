@@ -2,6 +2,7 @@ package com.app.restapi.resource;
 
 import java.util.Set;
 
+import com.app.restapi.dto.RoleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.restapi.dto.request.RoleRequest;
-import com.app.restapi.dto.response.RoleResponse;
-import com.app.restapi.jpa.entity.Role;
 import com.app.restapi.service.RoleService;
 
 @RestController
@@ -24,13 +22,13 @@ public class RoleResource {
 	private RoleService roleService;
 	
 	@PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody RoleRequest roleRequest) {
-        Role role = roleService.createRole(roleRequest);
+    public ResponseEntity<RoleDto> createRole(@RequestBody RoleDto roleDto) {
+		RoleDto role = roleService.createRole(roleDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(role);
     }
 	
 	@GetMapping("/all")
-	public ResponseEntity<Set<RoleResponse>> getAllRoles() {
+	public ResponseEntity<Set<RoleDto>> getAllRoles() {
 		return ResponseEntity.status(HttpStatus.OK).body(roleService.getRoles());
 	}
 }

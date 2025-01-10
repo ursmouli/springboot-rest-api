@@ -4,13 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.app.restapi.dto.RoleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.app.restapi.dto.request.RoleRequest;
-import com.app.restapi.dto.response.RoleResponse;
-import com.app.restapi.jpa.dao.RoleRepository;
+import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.Role;
 
 @Service
@@ -19,27 +18,30 @@ public class RoleService {
 	@Autowired
 	private RoleRepository roleRepository;
 	
-	public Role createRole(RoleRequest roleRequest) {
-		if (roleRepository.findByName(roleRequest.getName()).isPresent()) {
-            throw new RuntimeException("Role already exists: " + roleRequest.getName());
+	public RoleDto createRole(RoleDto roleDto) {
+		if (roleRepository.findByName(roleDto.getName()).isPresent()) {
+            throw new RuntimeException("Role already exists: " + roleDto.getName());
         }
 
         Role role = new Role();
         
-        if (StringUtils.hasText(roleRequest.getName()) && !roleRequest.getName().startsWith("ROLE_")) {
-        	roleRequest.setName("ROLE_" + roleRequest.getName());
+        if (StringUtils.hasText(roleDto.getName()) && !roleDto.getName().startsWith("ROLE_")) {
+			roleDto.setName("ROLE_" + roleDto.getName());
         }
         
-        role.setName(roleRequest.getName());
-        return roleRepository.save(role);
+        role.setName(roleDto.getName());
+
+		role = roleRepository.save(role);
+
+        return new RoleDto(role.getId(), role.getName());
 	}
 
-	public Set<RoleResponse> getRoles() {
+	public Set<RoleDto> getRoles() {
 		List<Role> roles = roleRepository.findAll();
 		
-		Set<RoleResponse> roleResponse = new HashSet<>();
+		Set<RoleDto> roleResponse = new HashSet<>();
 		for (Role role : roles) {
-			roleResponse.add(new RoleResponse(role.getId(), role.getName()));
+			roleResponse.add(new RoleDto(role.getId(), role.getName()));
 		}
 		
 		return roleResponse;

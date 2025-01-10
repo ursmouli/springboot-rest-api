@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.app.restapi.RestApiApplication;
-import com.app.restapi.jpa.dao.ContactDetailsRepository;
+import com.app.restapi.jpa.repo.ContactDetailsRepository;
 import com.app.restapi.jpa.entity.ContactDetails;
 
 import static org.junit.jupiter.api.Assertions.*;

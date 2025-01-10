@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.app.restapi.jpa.dao.ContactDetailsRepository;
+import com.app.restapi.jpa.repo.ContactDetailsRepository;
 
 @Configuration
 public class ApplicatoinConfiguration {

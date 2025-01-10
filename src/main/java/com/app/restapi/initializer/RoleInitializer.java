@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.app.restapi.jpa.dao.RoleRepository;
+import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.Role;
 
 @Component

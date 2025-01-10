@@ -1,5 +1,6 @@
 package com.app.restapi.resource;
 
+import com.app.restapi.dto.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +20,15 @@ public class StudentResource {
 	@Autowired
     private StudentService studentService;
 
-	@PostMapping("/register")
-	public ResponseEntity<Student> registerStudent(@RequestBody Student student) {
-		Student savedStudent = studentService.saveStudent(student);
+	@PostMapping("/add")
+	public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto student) {
+		StudentDto savedStudent = studentService.saveStudent(student);
         return ResponseEntity.ok(savedStudent);
 	}
 	
 	@GetMapping("/{registrationNumber}")
-    public ResponseEntity<Student> getStudentByRegistrationNumber(@PathVariable String registrationNumber) {
-		Student student = studentService.getStudentByRegistrationNumber(registrationNumber);
+    public ResponseEntity<StudentDto> getStudentByRegistrationNumber(@PathVariable String registrationNumber) {
+		StudentDto student = studentService.getStudentByRegistrationNumber(registrationNumber);
         return ResponseEntity.ok(student);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.app.restapi.jpa.dao.ContactDetailsRepository;
+import com.app.restapi.jpa.repo.ContactDetailsRepository;
 import com.app.restapi.jpa.entity.ContactDetails;
 
 @Service

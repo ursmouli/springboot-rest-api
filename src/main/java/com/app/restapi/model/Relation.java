@@ -1,4 +1,4 @@
-package com.app.restapi.dto;
+package com.app.restapi.model;
 
 public enum Relation {
 

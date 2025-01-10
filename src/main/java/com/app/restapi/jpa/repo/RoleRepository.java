@@ -1,4 +1,4 @@
-package com.app.restapi.jpa.dao;
+package com.app.restapi.jpa.repo;
 
 import java.util.Optional;
 

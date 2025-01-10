@@ -4,15 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Student {
@@ -36,7 +28,7 @@ public class Student {
 	@Column(nullable = false, unique = true)
 	private String registrationNumber;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Guardian> guardians = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -51,72 +43,81 @@ public class Student {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Student setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public Student setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 
 	public String getMiddleName() {
 		return middleName;
 	}
 
-	public void setMiddleName(String middleName) {
+	public Student setMiddleName(String middleName) {
 		this.middleName = middleName;
+		return this;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public Student setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 
 	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(LocalDate dob) {
+	public Student setDob(LocalDate dob) {
 		this.dob = dob;
+		return this;
 	}
 
 	public String getRegistrationNumber() {
 		return registrationNumber;
 	}
 
-	public void setRegistrationNumber(String registrationNumber) {
+	public Student setRegistrationNumber(String registrationNumber) {
 		this.registrationNumber = registrationNumber;
+		return this;
 	}
 
 	public List<Guardian> getGuardians() {
         return guardians;
     }
 
-    public void setGuardians(List<Guardian> guardians) {
+    public Student setGuardians(List<Guardian> guardians) {
         this.guardians = guardians;
+		return this;
     }
 
 	public Address getPermanentAddress() {
 		return permanentAddress;
 	}
 
-	public void setPermanentAddress(Address permanentAddress) {
+	public Student setPermanentAddress(Address permanentAddress) {
 		this.permanentAddress = permanentAddress;
+		return this;
 	}
 
 	public Address getResidentialAddress() {
 		return residentialAddress;
 	}
 
-	public void setResidentialAddress(Address residentialAddress) {
+	public Student setResidentialAddress(Address residentialAddress) {
 		this.residentialAddress = residentialAddress;
+		return this;
 	}
 	
     

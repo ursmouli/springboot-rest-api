@@ -11,8 +11,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.app.restapi.dto.LoginUserDto;
 import com.app.restapi.dto.RegisterUserDto;
-import com.app.restapi.jpa.dao.ContactDetailsRepository;
-import com.app.restapi.jpa.dao.RoleRepository;
+import com.app.restapi.jpa.repo.ContactDetailsRepository;
+import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.ContactDetails;
 import com.app.restapi.jpa.entity.Role;
 
