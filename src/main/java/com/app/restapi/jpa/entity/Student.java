@@ -28,7 +28,7 @@ public class Student {
 	@Column(nullable = false, unique = true)
 	private String registrationNumber;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guardian> guardians = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)

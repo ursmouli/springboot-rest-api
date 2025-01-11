@@ -1,10 +1,22 @@
 package com.app.restapi.service;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.app.restapi.converter.StudentConverter;
+import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.StudentDto;
+import com.app.restapi.model.SortDirection;
+import com.app.restapi.util.EntityUtil;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.app.restapi.exceptions.StudentNotFoundException;
@@ -15,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StudentService {
 	private static final Logger log = LoggerFactory.getLogger(StudentService.class);
+
+	private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("id", "firstName", "lastName", "createdDate");
 
 	private final StudentRepository studentRepository;
 	private final StudentConverter studentConverter;
@@ -57,6 +71,28 @@ public class StudentService {
 						"Student with registration number " + registrationNumber + " not found."));
 
 		return studentConverter.toDto(student);
+	}
+
+	@Transactional
+	public Page<StudentDto> getAllStudent(PaginationDto pagination) {
+
+		if (!ALLOWED_SORT_FIELDS.contains(pagination.getSortField())) {
+			throw new IllegalArgumentException("Invalid sort field: " + pagination.getSortField());
+		}
+
+		EntityUtil.isFieldExist(Student.class, pagination.getSortField());
+
+		Sort sort = Sort.by(
+				SortDirection.toSpringSortDirection(pagination.getSortDirection()),
+				pagination.getSortField()
+		);
+
+		Pageable pageable = PageRequest.of(pagination.getPage(), pagination.getSize(), sort);
+
+		// TODO verify if below can be used if lazy initialization doesn't work
+		// all.getContent().forEach(student -> Hibernate.initialize(student.getGuardians()));
+
+		return studentRepository.findAll(pageable).map(studentConverter::toDto);
 	}
 
 	private String getRegistrationNumber() {

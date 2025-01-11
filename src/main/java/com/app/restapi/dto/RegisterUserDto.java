@@ -15,32 +15,36 @@ public class RegisterUserDto {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public RegisterUserDto setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public RegisterUserDto setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
 
-	public void setFullName(String fullName) {
+	public RegisterUserDto setFullName(String fullName) {
 		this.fullName = fullName;
+		return this;
 	}
 
 	public Set<String> getRoles() {
 		return roles;
 	}
 	
-	public void setRoles(Set<String> roles) {
+	public RegisterUserDto setRoles(Set<String> roles) {
 		this.roles = roles;
+		return this;
 	}
 
 }

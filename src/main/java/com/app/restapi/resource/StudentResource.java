@@ -1,7 +1,10 @@
 package com.app.restapi.resource;
 
+import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.StudentDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,11 @@ public class StudentResource {
 
 	public StudentResource(StudentService studentService) {
 		this.studentService = studentService;
+	}
+
+	@PostMapping("/all")
+	public ResponseEntity<Page<StudentDto>> getAll(@RequestBody @Validated PaginationDto paginationDto) {
+		return ResponseEntity.ok(studentService.getAllStudent(paginationDto));
 	}
 
 	@PostMapping("/add")

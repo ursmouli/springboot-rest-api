@@ -74,4 +74,14 @@ public class StudentConverter {
 
         return dto;
     }
+
+    public List<StudentDto> toDtoList(List<Student> students) {
+        List<StudentDto> ret = new ArrayList<>();
+
+        for (Student student : students) {
+            ret.add(toDto(student));
+        }
+
+        return ret;
+    }
 }
