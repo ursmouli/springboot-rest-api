@@ -1,0 +1,41 @@
+<configuration>
+    <!-- Define the pattern for log output -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
+
+    <!-- Define the log file location -->
+    <property name="LOG_PATH" value="logs"/>
+
+    <!-- Console Appender for logging to the console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Rolling File Appender for logging to a file with rotation -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/spring-boot-application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Log file name pattern -->
+            <fileNamePattern>${LOG_PATH}/spring-boot-application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Maximum number of rolled-over log files to keep -->
+            <maxHistory>30</maxHistory>
+            <!-- Total size of all archived files -->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Configure log levels and appenders -->
+    <logger name="com.app.restapi" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>

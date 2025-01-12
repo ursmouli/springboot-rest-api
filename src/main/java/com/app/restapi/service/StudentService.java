@@ -1,8 +1,6 @@
 package com.app.restapi.service;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import com.app.restapi.converter.StudentConverter;
@@ -10,7 +8,7 @@ import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.StudentDto;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
-import org.hibernate.Hibernate;
+//import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -75,7 +73,7 @@ public class StudentService {
 
 	@Transactional
 	public Page<StudentDto> getAllStudent(PaginationDto pagination) {
-
+		log.debug("pagination: {}", pagination);
 		if (!ALLOWED_SORT_FIELDS.contains(pagination.getSortField())) {
 			throw new IllegalArgumentException("Invalid sort field: " + pagination.getSortField());
 		}

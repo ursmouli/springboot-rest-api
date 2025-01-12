@@ -2,6 +2,8 @@ package com.app.restapi.resource;
 
 import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.StudentDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.restapi.service.StudentService;
 
+import java.util.List;
+
 @RequestMapping("/api/student")
 @RestController
 public class StudentResource {
+
+	private static final Logger log = LoggerFactory.getLogger(StudentResource.class);
 	
     private final StudentService studentService;
 
@@ -26,6 +32,7 @@ public class StudentResource {
 
 	@PostMapping("/all")
 	public ResponseEntity<Page<StudentDto>> getAll(@RequestBody @Validated PaginationDto paginationDto) {
+		log.debug("pagination: {}", paginationDto);
 		return ResponseEntity.ok(studentService.getAllStudent(paginationDto));
 	}
 
@@ -40,4 +47,15 @@ public class StudentResource {
 		StudentDto student = studentService.getStudentByRegistrationNumber(registrationNumber);
         return ResponseEntity.ok(student);
     }
+
+	/**
+	 * Only use this for testing
+	 * @param students
+	 * @return
+	 */
+	@PostMapping("/addall")
+	public ResponseEntity<Void> saveStudents(@RequestBody List<StudentDto> students) {
+		students.forEach(studentService::saveStudent);
+		return ResponseEntity.ok().build();
+	}
 }

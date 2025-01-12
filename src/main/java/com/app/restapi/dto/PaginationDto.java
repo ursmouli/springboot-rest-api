@@ -45,4 +45,14 @@ public class PaginationDto {
     public void setSortDirection(SortDirection sortDirection) {
         this.sortDirection = sortDirection;
     }
+
+    @Override
+    public String toString() {
+        return "PaginationDto{" +
+                "page=" + page +
+                ", size=" + size +
+                ", sortField='" + sortField + '\'' +
+                ", sortDirection=" + sortDirection +
+                '}';
+    }
 }
