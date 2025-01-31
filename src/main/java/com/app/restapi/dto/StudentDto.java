@@ -13,6 +13,7 @@ public class StudentDto {
     private AddressDto permanentAddress;
     private AddressDto residentialAddress;
     private List<GuardianDto> guardians;
+    private boolean sameAsPermanentAddress;
 
     public StudentDto() {}
     public StudentDto(Long id, String firstName, String middleName, String lastName, LocalDate dob) {
@@ -23,7 +24,7 @@ public class StudentDto {
         this.dob = dob;
     }
     public StudentDto(Long id, String firstName, String middleName, String lastName, LocalDate dob,
-                      AddressDto permanentAddress, AddressDto residentialAddress, List<GuardianDto> guardians) {
+                      AddressDto permanentAddress, AddressDto residentialAddress, List<GuardianDto> guardians, boolean sameAsPermanentAddress) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -32,6 +33,7 @@ public class StudentDto {
         this.permanentAddress = permanentAddress;
         this.residentialAddress = residentialAddress;
         this.guardians = guardians;
+        this.sameAsPermanentAddress = sameAsPermanentAddress;
     }
 
     public Long getId() {
@@ -106,7 +108,14 @@ public class StudentDto {
         return this;
     }
 
-    public List<GuardianDto> getGuardians() {
+    public boolean isSameAsPermanentAddress() {
+		return sameAsPermanentAddress;
+	}
+	public StudentDto setSameAsPermanentAddress(boolean sameAsPermanentAddress) {
+		this.sameAsPermanentAddress = sameAsPermanentAddress;
+		return this;
+	}
+	public List<GuardianDto> getGuardians() {
         return guardians;
     }
 

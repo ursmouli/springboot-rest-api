@@ -38,6 +38,8 @@ public class Student {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "residential_address_id", referencedColumnName = "id")
     private Address residentialAddress;
+    
+    private boolean sameAsPermanentAddress;
 
 	public Long getId() {
 		return id;
@@ -119,6 +121,14 @@ public class Student {
 		this.residentialAddress = residentialAddress;
 		return this;
 	}
+
+	public boolean isSameAsPermanentAddress() {
+		return sameAsPermanentAddress;
+	}
+
+	public Student setSameAsPermanentAddress(boolean sameAsPermanentAddress) {
+		this.sameAsPermanentAddress = sameAsPermanentAddress;
+		return this;
+	}
 	
-    
 }

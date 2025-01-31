@@ -28,7 +28,8 @@ public class StudentConverter {
                 .setMiddleName(dto.getMiddleName())
                 .setLastName(dto.getLastName())
                 .setRegistrationNumber(dto.getRegistrationNumber())
-                .setDob(dto.getDob());
+                .setDob(dto.getDob())
+                .setSameAsPermanentAddress(dto.isSameAsPermanentAddress());
 
         if (dto.getPermanentAddress() != null) {
             entity.setPermanentAddress(addressConverter.toEntity(dto.getPermanentAddress()));
@@ -55,7 +56,8 @@ public class StudentConverter {
                 .setMiddleName(entity.getMiddleName())
                 .setLastName(entity.getLastName())
                 .setDob(entity.getDob())
-                .setRegistrationNumber(entity.getRegistrationNumber());
+                .setRegistrationNumber(entity.getRegistrationNumber())
+                .setSameAsPermanentAddress(entity.isSameAsPermanentAddress());
 
         if (entity.getPermanentAddress() != null) {
             dto.setPermanentAddress(addressConverter.toDto(entity.getPermanentAddress()));
