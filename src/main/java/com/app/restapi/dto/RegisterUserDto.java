@@ -1,5 +1,6 @@
 package com.app.restapi.dto;
 
+import java.util.Date;
 import java.util.Set;
 
 public class RegisterUserDto {
@@ -7,7 +8,11 @@ public class RegisterUserDto {
 
 	private String password;
 
-	private String fullName;
+	private String firstName;
+	private String middleName;
+	private String lastName;
+
+	private Date dateOfBirth;
 	
 	private Set<String> roles;
 
@@ -29,13 +34,39 @@ public class RegisterUserDto {
 		return this;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public RegisterUserDto setFullName(String fullName) {
-		this.fullName = fullName;
+	public RegisterUserDto setFirstName(String firstName) {
+		this.firstName = firstName;
 		return this;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public RegisterUserDto setMiddleName(String middleName) {
+		this.middleName = middleName;
+		return this;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public RegisterUserDto setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Set<String> getRoles() {

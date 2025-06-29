@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = RestApiApplication.class)
-public class ContactDetailsRepoTest {
+public class ContactDetailsDtoRepoTest {
 
 	@Autowired
 	private ContactDetailsRepository contactDetailsRepository;

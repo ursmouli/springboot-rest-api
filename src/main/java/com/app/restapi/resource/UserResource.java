@@ -1,13 +1,22 @@
 package com.app.restapi.resource;
 
+import com.app.restapi.dto.ContactDetailsDto;
+import com.app.restapi.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/user")
 @RestController
 public class UserResource {
+
+	private final UserService userService;
+
+	public UserResource(UserService userService) {
+		this.userService = userService;
+	}
 	
 	@GetMapping("/welcome")
 	// @PreAuthorize("hasRole('ROLE_USER')")

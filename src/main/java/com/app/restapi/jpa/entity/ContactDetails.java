@@ -1,5 +1,6 @@
 package com.app.restapi.jpa.entity;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -28,6 +29,7 @@ import jakarta.persistence.Table;
 @Entity
 public class ContactDetails implements UserDetails {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,13 +37,22 @@ public class ContactDetails implements UserDetails {
 	private Long id;
 
 	@Column(nullable = false)
-	private String fullName;
+	private String firstName;
+
+	@Column
+	private String middleName;
+
+	@Column
+	private String lastName;
 
 	@Column(nullable = false)
 	private String password;
 
 	@Column(unique = true, nullable = false)
 	private String email;
+
+	@Column(nullable = false)
+	private Date dob;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<>();
@@ -94,64 +105,98 @@ public class ContactDetails implements UserDetails {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public ContactDetails setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public ContactDetails setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public ContactDetails setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public ContactDetails setRoles(Set<Role> roles) {
 		this.roles = roles;
+		return this;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public ContactDetails setFirstName(String firstName) {
+		this.firstName = firstName;
+		return this;
 	}
 
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public ContactDetails setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public ContactDetails setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+		return this;
 	}
 
 	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public ContactDetails setAddress(Address address) {
 		this.address = address;
+		return this;
 	}
 
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public ContactDetails setMiddleName(String middleName) {
+		this.middleName = middleName;
+		return this;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public ContactDetails setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public ContactDetails setDob(Date dob) {
+		this.dob = dob;
+		return this;
+	}
 }

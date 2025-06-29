@@ -3,6 +3,9 @@ package com.app.restapi.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.app.restapi.model.Roles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +21,8 @@ import com.app.restapi.jpa.entity.Role;
 
 @Service
 public class AuthenticationService {
+
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
 	private final ContactDetailsRepository contactDetailsRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -37,10 +42,15 @@ public class AuthenticationService {
 	}
 	
 	public ContactDetails signup(RegisterUserDto input) {
+
+		setDefaultUserRoleIfMissing(input);
+
 		ContactDetails contactDetails = new ContactDetails();
 		
-		contactDetails.setFullName(input.getFullName());
-		contactDetails.setEmail(input.getEmail());
+		contactDetails.setFirstName(input.getFirstName());
+		contactDetails.setMiddleName(input.getMiddleName());
+		contactDetails.setLastName(input.getLastName());
+		contactDetails.setDob(input.getDateOfBirth());
 		contactDetails.setEmail(input.getEmail());
 		contactDetails.setPassword(passwordEncoder.encode(input.getPassword()));
 		
@@ -55,6 +65,13 @@ public class AuthenticationService {
 		}
 		
 		return contactDetailsRepository.save(contactDetails);
+	}
+
+	private void setDefaultUserRoleIfMissing(RegisterUserDto dto) {
+		if (CollectionUtils.isEmpty(dto.getRoles())) {
+			logger.info("Roles missing for user {} from registration input. Setting default to user role", dto.getEmail());
+			dto.setRoles(Set.of(Roles.ROLE_USER.name()));
+		}
 	}
 	
 	public ContactDetails authenticate(LoginUserDto input) {
