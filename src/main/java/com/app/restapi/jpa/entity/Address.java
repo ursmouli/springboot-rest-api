@@ -1,11 +1,6 @@
 package com.app.restapi.jpa.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
@@ -18,13 +13,23 @@ public class Address {
 
 	private String city;
 
-	private String district;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "taluk_id", nullable = false)
+	private Taluk taluk;
 
-	private String state;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "district_id", nullable = false)
+	private District district;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id", nullable = false)
+	private State state;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "country_id", nullable = false)
+	private Country country;
 
 	private String postalCode;
-
-	private String country;
 
 	@OneToOne(mappedBy = "permanentAddress", cascade = CascadeType.ALL)
 	private Student studentPermanent;
@@ -62,20 +67,29 @@ public class Address {
 		return this;
 	}
 
-	public String getDistrict() {
+	public Taluk getTaluk() {
+		return taluk;
+	}
+
+	public Address setTaluk(Taluk taluk) {
+		this.taluk = taluk;
+		return this;
+	}
+
+	public District getDistrict() {
 		return district;
 	}
 
-	public Address setDistrict(String district) {
+	public Address setDistrict(District district) {
 		this.district = district;
 		return this;
 	}
 
-	public String getState() {
+	public State getState() {
 		return state;
 	}
 
-	public Address setState(String state) {
+	public Address setState(State state) {
 		this.state = state;
 		return this;
 	}
@@ -89,11 +103,11 @@ public class Address {
 		return this;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public Address setCountry(String country) {
+	public Address setCountry(Country country) {
 		this.country = country;
 		return this;
 	}
