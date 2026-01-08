@@ -1,0 +1,153 @@
+{
+  "Karnataka": [
+    {
+      "district": "Bagalkote",
+      "talukas": [
+        {"name": "Bagalkote", "status": "City Municipal Council"},
+        {"name": "Jamkhandi", "status": "City Municipal Council"},
+        {"name": "Mudhola", "status": "City Municipal Council"},
+        {"name": "Badami", "status": "Town Panchayat"},
+        {"name": "Bilagi", "status": "Town Panchayat"},
+        {"name": "Hunagunda", "status": "Town Panchayat"},
+        {"name": "Ilkal", "status": "City Municipal Council"},
+        {"name": "Rabkavi Banhatti", "status": "City Municipal Council"},
+        {"name": "Guledgudda", "status": "Town Municipal Council"}
+      ]
+    },
+    {
+      "district": "Ballari",
+      "talukas": [
+        {"name": "Ballari", "status": "City Corporation"},
+        {"name": "Kurugodu", "status": "Town Municipal Council"},
+        {"name": "Kampli", "status": "Town Municipal Council"},
+        {"name": "Sanduru", "status": "Town Municipal Council"},
+        {"name": "Siraguppa", "status": "City Municipal Council"}
+      ]
+    },
+    {
+      "district": "Belagavi",
+      "talukas": [
+        {"name": "Belagavi", "status": "City Corporation"},
+        {"name": "Athani", "status": "Town Municipal Council"},
+        {"name": "Bailhongal", "status": "Town Municipal Council"},
+        {"name": "Chikkodi", "status": "Town Municipal Council"},
+        {"name": "Gokak", "status": "City Municipal Council"},
+        {"name": "Khanapura", "status": "Town Panchayat"},
+        {"name": "Mudalgi", "status": "Town Municipal Council"},
+        {"name": "Nippani", "status": "City Municipal Council"},
+        {"name": "Rayabaga", "status": "Town Panchayat"},
+        {"name": "Savadatti", "status": "Town Municipal Council"},
+        {"name": "Ramadurga", "status": "Town Municipal Council"},
+        {"name": "Kagawada", "status": "Town Panchayat"},
+        {"name": "Hukkeri", "status": "Town Municipal Council"},
+        {"name": "Kitturu", "status": "Town Panchayat"},
+        {"name": "Yargatti", "status": "Town Panchayat"}
+      ]
+    },
+    {
+      "district": "Bengaluru Urban",
+      "talukas": [
+        {"name": "Bengaluru", "status": "City Corporation"},
+        {"name": "Kengeri", "status": "City Corporation"},
+        {"name": "Krishnarajapura", "status": "City Corporation"},
+        {"name": "Anekal", "status": "Town Municipal Council"},
+        {"name": "Yelahanka", "status": "City Corporation"}
+      ]
+    },
+    {
+      "district": "Bengaluru Rural",
+      "talukas": [
+        {"name": "Nelamangala", "status": "Town Panchayat"},
+        {"name": "Doddaballapura", "status": "City Municipal Council"},
+        {"name": "Devanahalli", "status": "Town Municipal Council"},
+        {"name": "Hosakote", "status": "City Municipal Council"}
+      ]
+    },
+    {
+      "district": "Bidar",
+      "talukas": [
+        {"name": "Aurad", "status": "City Municipal Council"},
+        {"name": "Basavakalyana", "status": "City Municipal Council"},
+        {"name": "Bhalki", "status": "City Municipal Council"},
+        {"name": "Bidar", "status": "City Municipal Council"},
+        {"name": "Chitgoppa", "status": "Town Municipal Council"},
+        {"name": "Hulsuru", "status": "Town Municipal Council"},
+        {"name": "Humnabad", "status": "City Municipal Council"},
+        {"name": "Kamalanagara", "status": "Town Municipal Council"}
+      ]
+    },
+    {
+      "district": "Chamarajanagara",
+      "talukas": [
+        {"name": "Chamarajanagara", "status": "City Municipal Council"},
+        {"name": "Gundlupete", "status": "Town Municipal Council"},
+        {"name": "Kollegala", "status": "City Municipal Council"},
+        {"name": "Yelanduru", "status": "Town Panchayat"},
+        {"name": "Hanuru", "status": "Town Panchayat"}
+      ]
+    },
+    {
+      "district": "Chikkaballapura",
+      "talukas": [
+        {"name": "Chikkaballapura", "status": "City Municipal Council"},
+        {"name": "Bagepalli", "status": "Town Municipal Council"},
+        {"name": "Chintamani", "status": "City Municipal Council"},
+        {"name": "Gauribidanuru", "status": "City Municipal Council"},
+        {"name": "Gudibanda", "status": "Town Municipal Council"},
+        {"name": "Sidlaghatta", "status": "Town Municipal Council"},
+        {"name": "Cheluru", "status": "Village Panchayat"},
+        {"name": "Manchenahalli", "status": "Village Panchayat"}
+      ]
+    },
+    {
+      "district": "Chikkmagaluru",
+      "talukas": [
+        {"name": "Chikkamagaluru", "status": "City Municipal Council"},
+        {"name": "Kaduru", "status": "Town Municipal Council"},
+        {"name": "Koppa", "status": "Town Panchayat"},
+        {"name": "Mudigere", "status": "Town Panchayat"},
+        {"name": "Narasimharajapura", "status": "Town Panchayat"},
+        {"name": "Sringeri", "status": "Town Panchayat"},
+        {"name": "Tarikere", "status": "Town Municipal Council"},
+        {"name": "Ajjampura", "status": "Town Panchayat"},
+        {"name": "Kalasa", "status": "Village Panchayat"}
+      ]
+    },
+    {
+      "district": "Chitradurga",
+      "talukas": [
+        {"name": "Chitradurga", "status": "City Municipal Council"},
+        {"name": "Challakere", "status": "City Municipal Council"},
+        {"name": "Hiriyur", "status": "City Municipal Council"},
+        {"name": "Holalkere", "status": "Town Panchayat"},
+        {"name": "Hosadurga", "status": "Town Municipal Council"},
+        {"name": "Molakalmuru", "status": "Town Panchayat"}
+      ]
+    },
+    {
+      "district": "Dakshina Kannada",
+      "talukas": [
+        {"name": "Mangaluru", "status": "City Corporation"},
+        {"name": "Ullal", "status": "City Municipal Council"},
+        {"name": "Mulki", "status": "Town Panchayat"},
+        {"name": "Moodbidri", "status": "Town Municipal Council"},
+        {"name": "Bantwala", "status": "Town Municipal Council"},
+        {"name": "Belathangadi", "status": "Town Panchayat"},
+        {"name": "Putturu", "status": "City Municipal Council"},
+        {"name": "Sulya", "status": "Town Panchayat"},
+        {"name": "Kadaba", "status": "Town Panchayat"}
+      ]
+    },
+    {
+      "district": "Davanagere",
+      "talukas": [
+        {"name": "Davanagere", "status": "City Corporation"},
+        {"name": "Harihara", "status": "City Municipal Council"},
+        {"name": "Channagiri", "status": "Town Municipal Council"},
+        {"name": "Honnali", "status": "Town Municipal Council"},
+        {"name": "Nyamathi", "status": "Town Panchayat"},
+        {"name": "Jagaluru", "status": "Town Panchayat"}
+      ]
+    }
+  ]
+}

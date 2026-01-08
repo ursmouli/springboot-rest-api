@@ -11,7 +11,7 @@ import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.Role;
 
 @Component
-public class RoleInitializer implements CommandLineRunner {
+public class UserRoleInitializer implements CommandLineRunner {
 
 	@Autowired
 	private RoleRepository roleRepository;

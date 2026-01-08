@@ -9,6 +9,7 @@ public class Taluk {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id")
@@ -18,23 +19,35 @@ public class Taluk {
         return id;
     }
 
-    public void setId(Long id) {
+    public Taluk setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Taluk setName(String name) {
         this.name = name;
+        return this;
     }
 
     public District getDistrict() {
         return district;
     }
 
-    public void setDistrict(District district) {
+    public Taluk setDistrict(District district) {
         this.district = district;
+        return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Taluk setStatus(String status) {
+        this.status = status;
+        return this;
     }
 }
