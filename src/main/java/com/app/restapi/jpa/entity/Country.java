@@ -36,7 +36,7 @@ public class Country {
         return code;
     }
 
-    public Country setCode(String ind) {
+    public Country setCode(String code) {
         this.code = code;
         return this;
     }

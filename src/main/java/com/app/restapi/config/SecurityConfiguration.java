@@ -39,10 +39,11 @@ public class SecurityConfiguration {
     		.csrf(AbstractHttpConfigurer::disable)
     		.authorizeHttpRequests((req) -> 
     			req
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/student/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/roles").hasAnyAuthority(Roles.ROLE_ADMIN.name())
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/auth/**").permitAll()
+//                        .requestMatchers("/api/student/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/roles").hasAnyAuthority(Roles.ROLE_ADMIN.name())
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
     		)
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
     		.authenticationProvider(authenticationProvider)

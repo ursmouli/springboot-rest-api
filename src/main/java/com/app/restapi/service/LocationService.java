@@ -32,25 +32,45 @@ public class LocationService {
     @Autowired
     private TalukRepository talukRepository;
 
-    public List<Country> getAllCountries() {
-        return countryRepository.findAll();
+    public List<LocationDto> getAllCountries() {
+        return countryRepository.findAll().stream()
+                .map(country ->
+                        new LocationDto()
+                                .setId(country.getId())
+                                .setName(country.getName())
+                                .setCode(country.getCode()))
+                .collect(Collectors.toList());
     }
 
     public List<LocationDto> getStatesByCountry(Long countryId) {
         return stateRepository.findByCountryId(countryId).stream()
-                .map(state -> new LocationDto(state.getId(), state.getName()))
+                .map(state ->
+                        new LocationDto()
+                                .setId(state.getId())
+                                .setName(state.getName())
+                                .setCode(state.getCode())
+                                .setRefId(state.getCountry().getId()))
                 .collect(Collectors.toList());
     }
 
     public List<LocationDto> getDistrictsByState(Long stateId) {
         return districtRepository.findByStateId(stateId).stream()
-                .map(district -> new LocationDto(district.getId(), district.getName()))
+                .map(district ->
+                        new LocationDto()
+                                .setId(district.getId())
+                                .setName(district.getName())
+                                .setCode(district.getCode())
+                                .setRefId(district.getState().getId()))
                 .collect(Collectors.toList());
     }
 
     public List<LocationDto> getTaluksByDistrict(Long districtId) {
         return talukRepository.findByDistrictId(districtId).stream()
-                .map(taluk -> new LocationDto(taluk.getId(), taluk.getName()))
+                .map(taluk ->
+                        new LocationDto()
+                                .setId(taluk.getId())
+                                .setName(taluk.getName())
+                                .setRefId(taluk.getDistrict().getId()))
                 .collect(Collectors.toList());
     }
 

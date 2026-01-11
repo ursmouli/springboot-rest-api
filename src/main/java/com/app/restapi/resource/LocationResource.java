@@ -20,7 +20,7 @@ public class LocationResource {
     private LocationService locationService;
 
     @GetMapping("/countries")
-    public ResponseEntity<List<Country>> getAllCountries() {
+    public ResponseEntity<List<LocationDto>> getAllCountries() {
         return ResponseEntity.ok(locationService.getAllCountries());
     }
 
