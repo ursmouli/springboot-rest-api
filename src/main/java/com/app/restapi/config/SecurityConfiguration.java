@@ -43,7 +43,7 @@ public class SecurityConfiguration {
     		.authorizeHttpRequests((req) -> 
     			req
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/students/**").permitAll()
                         .requestMatchers("/api/properties/**").permitAll()
                         .requestMatchers("/api/roles/**").permitAll()

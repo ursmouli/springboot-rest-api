@@ -1,5 +1,6 @@
 package com.app.restapi.resource;
 
+import com.app.restapi.jpa.entity.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,7 @@ import com.app.restapi.jpa.entity.ContactDetails;
 import com.app.restapi.service.AuthenticationService;
 import com.app.restapi.service.JwtService;
 
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RestController
 public class AuthenticationResource {
 
@@ -40,7 +41,10 @@ public class AuthenticationResource {
 		
 		LoginResponse loginResponse = new LoginResponse()
 				.setToken(jwtToken)
-				.setExpiresIn(jwtService.getJwtExpirationTime());
+				.setExpiresIn(jwtService.getJwtExpirationTime())
+				.setName(concatDetails.getFirstName() + " " + concatDetails.getLastName())
+				.setRoles(concatDetails.getRoles().stream().map(Role::getName).toList())
+				.setEmail(concatDetails.getEmail());
 		
 		return ResponseEntity.ok(loginResponse);
 	}
