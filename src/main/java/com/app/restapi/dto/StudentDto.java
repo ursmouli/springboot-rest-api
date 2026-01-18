@@ -1,6 +1,8 @@
 package com.app.restapi.dto;
 
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDto {
@@ -8,11 +10,13 @@ public class StudentDto {
     private String firstName;
     private String middleName;
     private String lastName;
+    private String bloodGroup;
     private LocalDate dob;
     private String registrationNumber;
     private AddressDto permanentAddress;
     private AddressDto residentialAddress;
-    private List<GuardianDto> guardians;
+    private List<GuardianDto> guardians = new ArrayList<>();
+    private List<SiblingDto> siblings = new ArrayList<>();
     private boolean sameAsPermanentAddress;
 
     public StudentDto() {}
@@ -121,6 +125,24 @@ public class StudentDto {
 
     public StudentDto setGuardians(List<GuardianDto> guardians) {
         this.guardians = guardians;
+        return this;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public StudentDto setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+        return this;
+    }
+
+    public List<SiblingDto> getSiblings() {
+        return siblings;
+    }
+
+    public StudentDto setSiblings(List<SiblingDto> siblings) {
+        this.siblings = siblings;
         return this;
     }
 }

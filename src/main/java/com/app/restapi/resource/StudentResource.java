@@ -19,7 +19,7 @@ import com.app.restapi.service.StudentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/students")
 public class StudentResource {
 
 	private static final Logger log = LoggerFactory.getLogger(StudentResource.class);

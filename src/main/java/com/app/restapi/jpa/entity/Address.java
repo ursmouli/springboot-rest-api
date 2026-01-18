@@ -9,27 +9,29 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String houseNumber;
 	private String street;
+	private String landMark;
 
-	private String city;
+	private String place;
+	private String postalCode;
+	private String addressLine1;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "taluk_id", nullable = false)
-	private Taluk taluk;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "district_id", nullable = false)
-	private District district;
+	@JoinColumn(name = "country_id", nullable = false)
+	private Country country;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id", nullable = false)
 	private State state;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "country_id", nullable = false)
-	private Country country;
+	@JoinColumn(name = "district_id", nullable = false)
+	private District district;
 
-	private String postalCode;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "taluk_id", nullable = false)
+	private Taluk taluk;
 
 	@OneToOne(mappedBy = "permanentAddress", cascade = CascadeType.ALL)
 	private Student studentPermanent;
@@ -49,6 +51,15 @@ public class Address {
 		return this;
 	}
 
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public Address setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+		return this;
+	}
+
 	public String getStreet() {
 		return street;
 	}
@@ -58,12 +69,30 @@ public class Address {
 		return this;
 	}
 
-	public String getCity() {
-		return city;
+	public String getPlace() {
+		return place;
 	}
 
-	public Address setCity(String city) {
-		this.city = city;
+	public Address setPlace(String place) {
+		this.place = place;
+		return this;
+	}
+
+	public String getLandMark() {
+		return landMark;
+	}
+
+	public Address setLandMark(String landMark) {
+		this.landMark = landMark;
+		return this;
+	}
+
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+
+	public Address setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
 		return this;
 	}
 

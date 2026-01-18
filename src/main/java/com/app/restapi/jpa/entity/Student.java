@@ -31,6 +31,9 @@ public class Student {
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guardian> guardians = new ArrayList<>();
 
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Sibling> siblings = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address_id", referencedColumnName = "id")
     private Address permanentAddress;
@@ -40,6 +43,16 @@ public class Student {
     private Address residentialAddress;
     
     private boolean sameAsPermanentAddress;
+
+	@PrePersist
+	public void generateRegistrationNumber() {
+		// Example logic: REG-2026-RANDOM
+		if (this.registrationNumber == null) {
+			this.registrationNumber = "STD-" +
+					java.time.Year.now().getValue() + "-" +
+					java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+		}
+	}
 
 	public Long getId() {
 		return id;
@@ -103,6 +116,15 @@ public class Student {
         this.guardians = guardians;
 		return this;
     }
+
+	public List<Sibling> getSiblings() {
+		return siblings;
+	}
+
+	public Student setSiblings(List<Sibling> siblings) {
+		this.siblings = siblings;
+		return this;
+	}
 
 	public Address getPermanentAddress() {
 		return permanentAddress;

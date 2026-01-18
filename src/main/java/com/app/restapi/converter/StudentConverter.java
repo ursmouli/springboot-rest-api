@@ -1,8 +1,10 @@
 package com.app.restapi.converter;
 
 import com.app.restapi.dto.GuardianDto;
+import com.app.restapi.dto.SiblingDto;
 import com.app.restapi.dto.StudentDto;
 import com.app.restapi.jpa.entity.Guardian;
+import com.app.restapi.jpa.entity.Sibling;
 import com.app.restapi.jpa.entity.Student;
 import org.springframework.stereotype.Component;
 
@@ -10,20 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StudentConverter {
+public class StudentConverter implements GenericConverter<Student, StudentDto> {
 
     private final AddressConverter addressConverter;
     private final GuardianConverter guardianConverter;
+    private final SiblingConverter siblingConverter;
 
-    public StudentConverter(AddressConverter addressConverter, GuardianConverter guardianConverter) {
+    public StudentConverter(AddressConverter addressConverter,
+                            GuardianConverter guardianConverter,
+                            SiblingConverter siblingConverter) {
         this.addressConverter = addressConverter;
         this.guardianConverter = guardianConverter;
+        this.siblingConverter = siblingConverter;
     }
 
-
+    @Override
     public Student toEntity(StudentDto dto) {
+        if (dto == null) return null;
         Student entity = new Student()
-                .setId(dto.getId())
                 .setFirstName(dto.getFirstName())
                 .setMiddleName(dto.getMiddleName())
                 .setLastName(dto.getLastName())
@@ -46,10 +52,20 @@ public class StudentConverter {
             entity.setGuardians(guardiansList);
         }
 
+        if (!dto.getSiblings().isEmpty()) {
+            List<Sibling> siblingList = new ArrayList<>();
+            dto.getSiblings().forEach(siblingDto -> {
+                siblingList.add(siblingConverter.toEntity(siblingDto));
+            });
+            entity.setSiblings(siblingList);
+        }
+
         return entity;
     }
 
+    @Override
     public StudentDto toDto(Student entity) {
+        if (entity == null) return null;
         StudentDto dto = new StudentDto()
                 .setId(entity.getId())
                 .setFirstName(entity.getFirstName())

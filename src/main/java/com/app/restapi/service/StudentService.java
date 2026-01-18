@@ -38,7 +38,7 @@ public class StudentService {
 
 	@Transactional
 	public StudentDto saveStudent(StudentDto studentDto) {
-		studentDto.setRegistrationNumber(getRegistrationNumber());
+//		studentDto.setRegistrationNumber(getRegistrationNumber());
 
 		final Student student = studentConverter.toEntity(studentDto);
 
@@ -53,6 +53,10 @@ public class StudentService {
 		// Set the bidirectional relationship for guardians
 		if (!student.getGuardians().isEmpty()) {
 			student.getGuardians().forEach(guardian -> guardian.setStudent(student));
+		}
+
+		if (!student.getSiblings().isEmpty()) {
+			student.getSiblings().forEach(sibling -> sibling.setStudent(student));
 		}
 
 		Student dbStudent = studentRepository.save(student);
@@ -93,10 +97,10 @@ public class StudentService {
 		return studentRepository.findAll(pageable).map(studentConverter::toDto);
 	}
 
-	private String getRegistrationNumber() {
-		// Generate a unique registration number
-		String year = String.valueOf(Year.now().getValue());
-		long count = studentRepository.count() + 1;
-		return "STU" + year + String.format("%03d", count);
-	}
+//	private String getRegistrationNumber() {
+//		// Generate a unique registration number
+//		String year = String.valueOf(Year.now().getValue());
+//		long count = studentRepository.count() + 1;
+//		return "STU" + year + String.format("%03d", count);
+//	}
 }

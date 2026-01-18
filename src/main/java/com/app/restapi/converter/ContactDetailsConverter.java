@@ -5,24 +5,28 @@ import com.app.restapi.jpa.entity.ContactDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContactDetailsConverter {
+public class ContactDetailsConverter implements GenericConverter<ContactDetails, ContactDetailsDto> {
 
-    public ContactDetails toEntity(ContactDetailsDto contactDetailsDto) {
+    @Override
+    public ContactDetails toEntity(ContactDetailsDto dto) {
+        if (dto == null) return null;
         return new ContactDetails()
-                .setFirstName(contactDetailsDto.getFirstName())
-                .setMiddleName(contactDetailsDto.getMiddleName())
-                .setLastName(contactDetailsDto.getLastName())
-                .setEmail(contactDetailsDto.getEmail())
-                .setPassword(contactDetailsDto.getPassword())
-                .setDob(contactDetailsDto.getDateOfBirth());
+                .setFirstName(dto.getFirstName())
+                .setMiddleName(dto.getMiddleName())
+                .setLastName(dto.getLastName())
+                .setEmail(dto.getEmail())
+                .setPassword(dto.getPassword())
+                .setDob(dto.getDateOfBirth());
     }
 
-    public ContactDetailsDto toDto(ContactDetails contactDetails) {
+    @Override
+    public ContactDetailsDto toDto(ContactDetails entity) {
+        if (entity == null) return null;
         return new ContactDetailsDto()
-                .setFirstName(contactDetails.getFirstName())
-                .setMiddleName(contactDetails.getMiddleName())
-                .setLastName(contactDetails.getLastName())
-                .setDateOfBirth(contactDetails.getDob())
-                .setEmail(contactDetails.getEmail());
+                .setFirstName(entity.getFirstName())
+                .setMiddleName(entity.getMiddleName())
+                .setLastName(entity.getLastName())
+                .setDateOfBirth(entity.getDob())
+                .setEmail(entity.getEmail());
     }
 }

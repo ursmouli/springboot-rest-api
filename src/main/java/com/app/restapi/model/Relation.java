@@ -6,5 +6,8 @@ public enum Relation {
     mother,
     guardian,
     sibling,
-    other
+    sister,
+    brother,
+    uncle,
+    aunt,
 }
