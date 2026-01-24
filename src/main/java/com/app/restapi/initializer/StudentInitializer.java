@@ -9,7 +9,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Component
 @Order(3)
@@ -97,5 +100,37 @@ public class StudentInitializer implements CommandLineRunner {
                         .setTaluk(manvi));
 
         studentRepository.saveAll(List.of(john, jane));
+
+        List<String> firstNames = List.of("Jane", "John", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona");
+        List<String> lastNames = List.of("Doe", "Smith", "Johnson", "Brown", "Taylor", "Miller", "Wilson");
+        Random random = new Random();
+
+        List<Student> students = new ArrayList<>();
+
+        for (int i = 1; i <= 30; i++) {
+            String fName = firstNames.get(random.nextInt(firstNames.size()));
+            String lName = lastNames.get(random.nextInt(lastNames.size()));
+
+            Student student = new Student()
+                    .setFirstName(fName)
+                    .setLastName(lName)
+                    .setDob(LocalDate.now().minusYears(15 + random.nextInt(10))) // Random age 15-25
+                    .setGender(random.nextBoolean() ? "M" : "F")
+                    .setSameAsPermanentAddress(true)
+                    .setPermanentAddress(new Address()
+                            .setHouseNumber(String.valueOf(i))
+                            .setLandMark("Landmark " + i)
+                            .setAddressLine1(i + " Main St")
+                            .setPostalCode("56000" + i)
+                            .setCountry(country)
+                            .setState(state)
+                            .setDistrict(district)
+                            .setTaluk(sindhanur)
+                    );
+
+            students.add(student);
+        }
+
+        studentRepository.saveAll(students);
     }
 }

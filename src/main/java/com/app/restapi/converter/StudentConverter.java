@@ -35,6 +35,7 @@ public class StudentConverter implements GenericConverter<Student, StudentDto> {
                 .setLastName(dto.getLastName())
                 .setRegistrationNumber(dto.getRegistrationNumber())
                 .setDob(dto.getDob())
+                .setGender(dto.getGender())
                 .setSameAsPermanentAddress(dto.isSameAsPermanentAddress());
 
         if (dto.getPermanentAddress() != null) {
@@ -72,6 +73,7 @@ public class StudentConverter implements GenericConverter<Student, StudentDto> {
                 .setMiddleName(entity.getMiddleName())
                 .setLastName(entity.getLastName())
                 .setDob(entity.getDob())
+                .setGender(entity.getGender())
                 .setRegistrationNumber(entity.getRegistrationNumber())
                 .setSameAsPermanentAddress(entity.isSameAsPermanentAddress());
 

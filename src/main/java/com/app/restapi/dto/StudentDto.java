@@ -18,6 +18,7 @@ public class StudentDto {
     private List<GuardianDto> guardians = new ArrayList<>();
     private List<SiblingDto> siblings = new ArrayList<>();
     private boolean sameAsPermanentAddress;
+    private String gender;
 
     public StudentDto() {}
     public StudentDto(Long id, String firstName, String middleName, String lastName, LocalDate dob) {
@@ -143,6 +144,15 @@ public class StudentDto {
 
     public StudentDto setSiblings(List<SiblingDto> siblings) {
         this.siblings = siblings;
+        return this;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public StudentDto setGender(String gender) {
+        this.gender = gender;
         return this;
     }
 }

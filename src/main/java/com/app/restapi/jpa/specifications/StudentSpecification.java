@@ -10,13 +10,13 @@ public class StudentSpecification {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentSpecification.class);
 
-    public static Specification<Student> hasSearchText(String searchText) {
+    public static Specification<Student> hasSearchText(String searchTerm) {
         return ((root, query, cb) -> {
-            if (searchText == null || searchText.isEmpty()) {
+            if (searchTerm == null || searchTerm.isEmpty()) {
                 return cb.conjunction();
             }
 
-            String pattern = "%" + searchText.toLowerCase().trim() + "%";
+            String pattern = "%" + searchTerm.toLowerCase().trim() + "%";
 
             logger.info("Student search pattern '{}'", pattern);
 

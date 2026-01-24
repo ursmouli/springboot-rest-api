@@ -98,8 +98,8 @@ public class StudentService {
 		// all.getContent().forEach(student -> Hibernate.initialize(student.getGuardians()));
 
 		Page<StudentDto> students;
-		if (pagination.getSearchText() != null && !pagination.getSearchText().trim().isEmpty()) {
-			Specification<Student> spec = StudentSpecification.hasSearchText(pagination.getSearchText());
+		if (pagination.getSearchTerm() != null && !pagination.getSearchTerm().trim().isEmpty()) {
+			Specification<Student> spec = StudentSpecification.hasSearchText(pagination.getSearchTerm());
 
 			students = studentRepository.findAll(spec, pageable).map(studentConverter::toDto);
 		} else {

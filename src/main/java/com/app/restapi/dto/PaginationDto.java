@@ -14,7 +14,7 @@ public class PaginationDto {
     private String sortField = "id";
     private SortDirection sortDirection = SortDirection.ASC;
 
-    private String searchText;
+    private String searchTerm;
 
     public int getPage() {
         return page;
@@ -52,12 +52,12 @@ public class PaginationDto {
         return this;
     }
 
-    public String getSearchText() {
-        return searchText;
+    public String getSearchTerm() {
+        return searchTerm;
     }
 
-    public PaginationDto setSearchText(String searchText) {
-        this.searchText = searchText;
+    public PaginationDto setSearchText(String searchTerm) {
+        this.searchTerm = searchTerm;
         return this;
     }
 
@@ -68,7 +68,7 @@ public class PaginationDto {
                 ", size=" + size +
                 ", sortField='" + sortField + '\'' +
                 ", sortDirection=" + sortDirection +
-                ", searchText='" + searchText + '\'' +
+                ", searchTerm='" + searchTerm + '\'' +
                 '}';
     }
 }
