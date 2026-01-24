@@ -56,7 +56,7 @@ public class PaginationDto {
         return searchTerm;
     }
 
-    public PaginationDto setSearchText(String searchTerm) {
+    public PaginationDto setSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
         return this;
     }

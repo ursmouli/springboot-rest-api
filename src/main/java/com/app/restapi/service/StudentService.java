@@ -79,7 +79,7 @@ public class StudentService {
 	}
 
 	@Transactional
-	public Page<StudentDto> getAllStudent(PaginationDto pagination) {
+	public Page<StudentDto> getStudents(PaginationDto pagination) {
 		log.debug("pagination: {}", pagination);
 		if (!ALLOWED_SORT_FIELDS.contains(pagination.getSortField())) {
 			throw new IllegalArgumentException("Invalid sort field: " + pagination.getSortField());
@@ -101,9 +101,19 @@ public class StudentService {
 		if (pagination.getSearchTerm() != null && !pagination.getSearchTerm().trim().isEmpty()) {
 			Specification<Student> spec = StudentSpecification.hasSearchText(pagination.getSearchTerm());
 
-			students = studentRepository.findAll(spec, pageable).map(studentConverter::toDto);
+			Page<Student> all = studentRepository.findAll(spec, pageable);
+			if (all == null || all.getTotalElements() == 0) {
+				students = Page.empty();
+			} else {
+				students = all.map(studentConverter::toDto);
+			}
 		} else {
-			students = studentRepository.findAll(pageable).map(studentConverter::toDto);
+			Page<Student> all = studentRepository.findAll(pageable);
+			if (all.getTotalElements() == 0) {
+				students = Page.empty();
+			} else {
+				students = all.map(studentConverter::toDto);
+			}
 		}
 
 		return students;

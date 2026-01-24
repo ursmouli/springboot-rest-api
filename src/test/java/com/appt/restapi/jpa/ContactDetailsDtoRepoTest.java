@@ -24,7 +24,7 @@ public class ContactDetailsDtoRepoTest {
 		ContactDetails contactDetails = new ContactDetails();
 		contactDetails.setEmail("mail@mail.com");
 		contactDetails.setPassword("password");
-		contactDetails.setFullName("fullname");
+//		contactDetails.setFullName("fullname");
 		
 		ContactDetails result = contactDetailsRepository.save(contactDetails);
 		

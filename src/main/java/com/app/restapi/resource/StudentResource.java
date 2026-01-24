@@ -33,7 +33,7 @@ public class StudentResource {
 	@PostMapping("/all")
 	public ResponseEntity<Page<StudentDto>> getAll(@RequestBody @Validated PaginationDto paginationDto) {
 		log.debug("pagination: {}", paginationDto);
-		return ResponseEntity.ok(studentService.getAllStudent(paginationDto));
+		return ResponseEntity.ok(studentService.getStudents(paginationDto));
 	}
 
 	@PostMapping("/add")
