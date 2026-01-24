@@ -42,7 +42,7 @@ public class StudentResource {
         return ResponseEntity.ok(savedStudent);
 	}
 	
-	@GetMapping("/{registrationNumber}")
+	@GetMapping("/find/{registrationNumber}")
     public ResponseEntity<StudentDto> getStudentByRegistrationNumber(@PathVariable String registrationNumber) {
 		StudentDto student = studentService.getStudentByRegistrationNumber(registrationNumber);
         return ResponseEntity.ok(student);

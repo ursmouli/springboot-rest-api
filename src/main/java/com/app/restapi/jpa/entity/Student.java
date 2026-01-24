@@ -24,6 +24,9 @@ public class Student {
 	
 	@Column(nullable = false)
 	private LocalDate dob;
+
+	@Column(nullable = false)
+	private String gender;
 	
 	@Column(nullable = false, unique = true)
 	private String registrationNumber;
@@ -152,5 +155,13 @@ public class Student {
 		this.sameAsPermanentAddress = sameAsPermanentAddress;
 		return this;
 	}
-	
+
+	public String getGender() {
+		return gender;
+	}
+
+	public Student setGender(String gender) {
+		this.gender = gender;
+		return this;
+	}
 }
