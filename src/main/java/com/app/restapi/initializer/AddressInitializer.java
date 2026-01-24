@@ -10,13 +10,14 @@ import com.app.restapi.jpa.repo.StateRepository;
 import com.app.restapi.jpa.repo.TalukRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Order(2)
 public class AddressInitializer implements CommandLineRunner {
-
 
     @Autowired
     private CountryRepository countryRepository;

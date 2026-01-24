@@ -6,6 +6,7 @@ import java.util.Set;
 import com.app.restapi.converter.StudentConverter;
 import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.StudentDto;
+import com.app.restapi.jpa.specifications.StudentSpecification;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
 //import org.hibernate.Hibernate;
@@ -15,12 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.app.restapi.exceptions.StudentNotFoundException;
 import com.app.restapi.jpa.repo.StudentRepository;
 import com.app.restapi.jpa.entity.Student;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 public class StudentService {
@@ -94,7 +97,16 @@ public class StudentService {
 		// TODO verify if below can be used if lazy initialization doesn't work
 		// all.getContent().forEach(student -> Hibernate.initialize(student.getGuardians()));
 
-		return studentRepository.findAll(pageable).map(studentConverter::toDto);
+		Page<StudentDto> students;
+		if (pagination.getSearchText() != null && !pagination.getSearchText().trim().isEmpty()) {
+			Specification<Student> spec = StudentSpecification.hasSearchText(pagination.getSearchText());
+
+			students = studentRepository.findAll(spec, pageable).map(studentConverter::toDto);
+		} else {
+			students = studentRepository.findAll(pageable).map(studentConverter::toDto);
+		}
+
+		return students;
 	}
 
 //	private String getRegistrationNumber() {

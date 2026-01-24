@@ -14,36 +14,51 @@ public class PaginationDto {
     private String sortField = "id";
     private SortDirection sortDirection = SortDirection.ASC;
 
+    private String searchText;
+
     public int getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public PaginationDto setPage(int page) {
         this.page = page;
+        return this;
     }
 
     public int getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public PaginationDto setSize(int size) {
         this.size = size;
+        return this;
     }
 
     public String getSortField() {
         return sortField;
     }
 
-    public void setSortField(String sortField) {
+    public PaginationDto setSortField(String sortField) {
         this.sortField = sortField;
+        return this;
     }
 
     public SortDirection getSortDirection() {
         return sortDirection;
     }
 
-    public void setSortDirection(SortDirection sortDirection) {
+    public PaginationDto setSortDirection(SortDirection sortDirection) {
         this.sortDirection = sortDirection;
+        return this;
+    }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public PaginationDto setSearchText(String searchText) {
+        this.searchText = searchText;
+        return this;
     }
 
     @Override
@@ -53,6 +68,7 @@ public class PaginationDto {
                 ", size=" + size +
                 ", sortField='" + sortField + '\'' +
                 ", sortDirection=" + sortDirection +
+                ", searchText='" + searchText + '\'' +
                 '}';
     }
 }

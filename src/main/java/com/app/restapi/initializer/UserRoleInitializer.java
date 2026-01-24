@@ -8,8 +8,8 @@ import com.app.restapi.jpa.entity.ContactDetails;
 import com.app.restapi.jpa.repo.ContactDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +17,7 @@ import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.Role;
 
 @Component
+@Order(1)
 public class UserRoleInitializer implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserRoleInitializer.class);

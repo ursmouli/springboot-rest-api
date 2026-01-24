@@ -5,8 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.app.restapi.jpa.entity.Student;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpecificationExecutor<Student> {
 	
 	Optional<Student> findByRegistrationNumber(String registrationNumber);
 }

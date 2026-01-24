@@ -1,17 +1,19 @@
 package com.app.restapi.initializer;
 
-import com.app.restapi.dto.StudentDto;
 import com.app.restapi.jpa.entity.*;
 import com.app.restapi.jpa.repo.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Component
+@Order(3)
+//@DependsOn("addressInitializer")
 public class StudentInitializer implements CommandLineRunner {
 
     private final StudentRepository studentRepository;

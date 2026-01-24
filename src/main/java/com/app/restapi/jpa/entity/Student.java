@@ -13,13 +13,13 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
 	
-	@Column(nullable = true)
+	@Column(name = "middle_name", nullable = true)
 	private String middleName;
 	
-	@Column(nullable = false)
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
 	
 	@Column(nullable = false)
@@ -28,7 +28,7 @@ public class Student {
 	@Column(nullable = false)
 	private String gender;
 	
-	@Column(nullable = false, unique = true)
+	@Column(name = "registration_number", nullable = false, unique = true)
 	private String registrationNumber;
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
