@@ -1,0 +1,98 @@
+package com.app.restapi.initializer;
+
+import com.app.restapi.jpa.entity.*;
+import com.app.restapi.jpa.repo.*;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+@Component
+@Order(4)
+public class EmployeeInitializer implements CommandLineRunner {
+
+    private final EmployeeRepository employeeRepository;
+    private final CountryRepository countryRepository;
+    private final StateRepository stateRepository;
+    private final DistrictRepository districtRepository;
+    private final TalukRepository talukRepository;
+
+    public EmployeeInitializer(EmployeeRepository employeeRepository,
+                              CountryRepository countryRepository,
+                              StateRepository stateRepository,
+                              DistrictRepository districtRepository,
+                              TalukRepository talukRepository) {
+        this.employeeRepository = employeeRepository;
+        this.countryRepository = countryRepository;
+        this.stateRepository = stateRepository;
+        this.districtRepository = districtRepository;
+        this.talukRepository = talukRepository;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        Country country = countryRepository.findByName("India")
+                .orElseThrow(() -> new EntityNotFoundException("Country India not found"));
+
+        State state = stateRepository.findByCountryId(country.getId())
+                .stream()
+                .filter(s -> s.getCode().equals("IN-KA"))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("State Karnataka not found"));
+
+        District district = districtRepository.findByStateId(state.getId())
+                .stream()
+                .filter(d -> d.getCode().equals(state.getCode() + "-RAI"))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("District Raichur not found"));
+
+        Taluk manvi = talukRepository.findByDistrictId(district.getId())
+                .stream()
+                .filter(t -> t.getName().equalsIgnoreCase("Manvi"))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Taluk Manvi not found"));
+
+        Taluk sindhanur = talukRepository.findByDistrictId(district.getId())
+                .stream()
+                .filter(t -> t.getName().equalsIgnoreCase("Sindhanur"))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Taluk Manvi not found"));
+
+        List<String> firstNames = List.of("Jane", "John", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona");
+        List<String> lastNames = List.of("Doe", "Smith", "Johnson", "Brown", "Taylor", "Miller", "Wilson");
+        Random random = new Random();
+
+        List<Employee> employees = new ArrayList<>();
+
+        for (int i = 1; i <= 30; i++) {
+            String fName = firstNames.get(random.nextInt(firstNames.size()));
+            String lName = lastNames.get(random.nextInt(lastNames.size()));
+
+            Employee employee = new Employee()
+                    .setFirstName(fName)
+                    .setLastName(lName)
+                    .setDob(LocalDate.now().minusYears(15 + random.nextInt(10))) // Random age 15-25
+                    .setGender(random.nextBoolean() ? "M" : "F")
+                    .setSameAsPermanentAddress(true)
+                    .setPermanentAddress(new Address()
+                            .setHouseNumber(String.valueOf(i))
+                            .setLandMark("Landmark " + i)
+                            .setAddressLine1(i + " Main St")
+                            .setPostalCode("56000" + i)
+                            .setCountry(country)
+                            .setState(state)
+                            .setDistrict(district)
+                            .setTaluk(sindhanur)
+                    );
+
+            employees.add(employee);
+        }
+
+        employeeRepository.saveAll(employees);
+    }
+}

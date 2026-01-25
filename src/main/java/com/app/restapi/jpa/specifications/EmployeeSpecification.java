@@ -1,16 +1,17 @@
 package com.app.restapi.jpa.specifications;
 
+import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Student;
 import jakarta.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
-public class StudentSpecification {
+public class EmployeeSpecification {
 
-    private static final Logger logger = LoggerFactory.getLogger(StudentSpecification.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeSpecification.class);
 
-    public static Specification<Student> hasSearchText(String searchTerm) {
+    public static Specification<Employee> hasSearchText(String searchTerm) {
         return ((root, query, cb) -> {
             if (searchTerm == null || searchTerm.isEmpty()) {
                 return cb.conjunction();
@@ -18,13 +19,13 @@ public class StudentSpecification {
 
             String pattern = "%" + searchTerm.toLowerCase().trim() + "%";
 
-            logger.info("Student search pattern '{}'", pattern);
+            logger.info("Employee search pattern '{}'", pattern);
 
             Predicate firstNameLike = cb.like(cb.lower(root.get("firstName").as(String.class)), pattern);
             Predicate lastNameLike = cb.like(cb.lower(root.get("lastName").as(String.class)), pattern);
-            Predicate rollNumber = cb.like(cb.lower(root.get("rollNumber").as(String.class)), pattern);
+            Predicate employeeNumber = cb.like(cb.lower(root.get("employeeNumber").as(String.class)), pattern);
 
-            return cb.or(firstNameLike, lastNameLike, rollNumber);
+            return cb.or(firstNameLike, lastNameLike, employeeNumber);
         });
     }
 }

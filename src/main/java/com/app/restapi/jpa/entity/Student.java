@@ -13,13 +13,13 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "first_name", nullable = false)
+	@Column(nullable = false)
 	private String firstName;
 	
-	@Column(name = "middle_name", nullable = true)
+	@Column(nullable = true)
 	private String middleName;
 	
-	@Column(name = "last_name", nullable = false)
+	@Column(nullable = false)
 	private String lastName;
 	
 	@Column(nullable = false)
@@ -28,8 +28,8 @@ public class Student {
 	@Column(nullable = false)
 	private String gender;
 	
-	@Column(name = "registration_number", nullable = false, unique = true)
-	private String registrationNumber;
+	@Column(nullable = false, unique = true)
+	private String rollNumber;
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guardian> guardians = new ArrayList<>();
@@ -50,8 +50,8 @@ public class Student {
 	@PrePersist
 	public void generateRegistrationNumber() {
 		// Example logic: REG-2026-RANDOM
-		if (this.registrationNumber == null) {
-			this.registrationNumber = "STD-" +
+		if (this.rollNumber == null) {
+			this.rollNumber = "STD-" +
 					java.time.Year.now().getValue() + "-" +
 					java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 		}
@@ -102,12 +102,12 @@ public class Student {
 		return this;
 	}
 
-	public String getRegistrationNumber() {
-		return registrationNumber;
+	public String getRollNumber() {
+		return rollNumber;
 	}
 
-	public Student setRegistrationNumber(String registrationNumber) {
-		this.registrationNumber = registrationNumber;
+	public Student setRollNumber(String rollNumber) {
+		this.rollNumber = rollNumber;
 		return this;
 	}
 

@@ -29,7 +29,7 @@ public class RoleResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(role);
     }
 	
-	@GetMapping("/all")
+	@GetMapping
 	public ResponseEntity<Set<RoleDto>> getAllRoles() {
 		return ResponseEntity.status(HttpStatus.OK).body(roleService.getRoles());
 	}

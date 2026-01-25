@@ -1,24 +1,23 @@
 package com.app.restapi.converter;
 
+import com.app.restapi.dto.EmployeeDto;
 import com.app.restapi.dto.GuardianDto;
-import com.app.restapi.dto.SiblingDto;
-import com.app.restapi.dto.StudentDto;
+import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Guardian;
 import com.app.restapi.jpa.entity.Sibling;
-import com.app.restapi.jpa.entity.Student;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StudentConverter implements GenericConverter<Student, StudentDto> {
+public class EmployeeConverter implements GenericConverter<Employee, EmployeeDto> {
 
     private final AddressConverter addressConverter;
     private final GuardianConverter guardianConverter;
     private final SiblingConverter siblingConverter;
 
-    public StudentConverter(AddressConverter addressConverter,
+    public EmployeeConverter(AddressConverter addressConverter,
                             GuardianConverter guardianConverter,
                             SiblingConverter siblingConverter) {
         this.addressConverter = addressConverter;
@@ -27,16 +26,20 @@ public class StudentConverter implements GenericConverter<Student, StudentDto> {
     }
 
     @Override
-    public Student toEntity(StudentDto dto) {
+    public Employee toEntity(EmployeeDto dto) {
         if (dto == null) return null;
-        Student entity = new Student()
+
+        Employee entity = new Employee()
                 .setFirstName(dto.getFirstName())
                 .setMiddleName(dto.getMiddleName())
                 .setLastName(dto.getLastName())
-                .setRollNumber(dto.getRollNumber())
+                .setEmployeeNumber(dto.getEmployeeNumber())
                 .setDob(dto.getDob())
                 .setGender(dto.getGender())
-                .setSameAsPermanentAddress(dto.isSameAsPermanentAddress());
+                .setSameAsPermanentAddress(dto.isSameAsPermanentAddress())
+                .setMartialStatus(dto.getMaritalStatus())
+                .setRole(dto.getRole())
+                .setPreviousEmployment(dto.getPreviousEmployment());
 
         if (dto.getPermanentAddress() != null) {
             entity.setPermanentAddress(addressConverter.toEntity(dto.getPermanentAddress()));
@@ -65,17 +68,21 @@ public class StudentConverter implements GenericConverter<Student, StudentDto> {
     }
 
     @Override
-    public StudentDto toDto(Student entity) {
+    public EmployeeDto toDto(Employee entity) {
         if (entity == null) return null;
-        StudentDto dto = new StudentDto()
+
+        EmployeeDto dto = new EmployeeDto()
                 .setId(entity.getId())
                 .setFirstName(entity.getFirstName())
                 .setMiddleName(entity.getMiddleName())
                 .setLastName(entity.getLastName())
                 .setDob(entity.getDob())
                 .setGender(entity.getGender())
-                .setRollNumber(entity.getRollNumber())
-                .setSameAsPermanentAddress(entity.isSameAsPermanentAddress());
+                .setEmployeeNumber(entity.getEmployeeNumber())
+                .setSameAsPermanentAddress(entity.isSameAsPermanentAddress())
+                .setMaritalStatus(entity.getMartialStatus())
+                .setPreviousEmployment(entity.getPreviousEmployment())
+                .setRole(entity.getRole());
 
         if (entity.getPermanentAddress() != null) {
             dto.setPermanentAddress(addressConverter.toDto(entity.getPermanentAddress()));
@@ -93,15 +100,5 @@ public class StudentConverter implements GenericConverter<Student, StudentDto> {
         }
 
         return dto;
-    }
-
-    public List<StudentDto> toDtoList(List<Student> students) {
-        List<StudentDto> ret = new ArrayList<>();
-
-        for (Student student : students) {
-            ret.add(toDto(student));
-        }
-
-        return ret;
     }
 }

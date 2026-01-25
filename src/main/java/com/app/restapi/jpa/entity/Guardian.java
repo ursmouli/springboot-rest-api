@@ -24,6 +24,10 @@ public class Guardian {
 	@JoinColumn(name = "student_id")
 	private Student student;
 
+	@ManyToOne
+	@JoinColumn(name = "employee_id")
+	private Employee employee;
+
 	public Guardian() {}
 	public Guardian(String name, String email, String phone, Relation relation) {
 		this.name = name;
@@ -91,7 +95,16 @@ public class Guardian {
 		this.student = student;
 		return this;
 	}
-	
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public Guardian setEmployee(Employee employee) {
+		this.employee = employee;
+		return this;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

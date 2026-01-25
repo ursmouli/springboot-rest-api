@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public interface GenericConverter<E, D> {
     E toEntity(D dto);
-    D toDto(E dto);
+    D toDto(E entity);
 
     default List<D> toDtoList(List<E> entities) {
         return entities.stream()

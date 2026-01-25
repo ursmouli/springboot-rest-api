@@ -25,6 +25,10 @@ public class Sibling {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
     public Long getId() {
         return id;
     }
@@ -85,6 +89,15 @@ public class Sibling {
 
     public Sibling setStudent(Student student) {
         this.student = student;
+        return this;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Sibling setEmployee(Employee employee) {
+        this.employee = employee;
         return this;
     }
 }

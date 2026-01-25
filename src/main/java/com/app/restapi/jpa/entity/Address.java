@@ -39,6 +39,12 @@ public class Address {
 	@OneToOne(mappedBy = "residentialAddress", cascade = CascadeType.ALL)
 	private Student studentResidential;
 
+	@OneToOne(mappedBy = "permanentAddress", cascade = CascadeType.ALL)
+	private Employee employeePermanent;
+
+	@OneToOne(mappedBy = "residentialAddress", cascade = CascadeType.ALL)
+	private Employee employeeResidential;
+
 	@OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
 	private ContactDetails contactDetails;
 
@@ -168,4 +174,21 @@ public class Address {
 		return this;
 	}
 
+	public Employee getEmployeePermanent() {
+		return employeePermanent;
+	}
+
+	public Address setEmployeePermanent(Employee employeePermanent) {
+		this.employeePermanent = employeePermanent;
+		return this;
+	}
+
+	public Employee getEmployeeResidential() {
+		return employeeResidential;
+	}
+
+	public Address setEmployeeResidential(Employee employeeResidential) {
+		this.employeeResidential = employeeResidential;
+		return this;
+	}
 }

@@ -41,8 +41,6 @@ public class StudentService {
 
 	@Transactional
 	public StudentDto saveStudent(StudentDto studentDto) {
-//		studentDto.setRegistrationNumber(getRegistrationNumber());
-
 		final Student student = studentConverter.toEntity(studentDto);
 
 		// Ensure the permanent/residential address is properly linked
@@ -64,16 +62,16 @@ public class StudentService {
 
 		Student dbStudent = studentRepository.save(student);
 
-		log.info("Student save with registrationNumber {}", dbStudent.getRegistrationNumber());
+		log.info("Student save with Roll Number {}", dbStudent.getRollNumber());
 
 		return studentConverter.toDto(dbStudent);
 	}
 
 	@Transactional
-	public StudentDto getStudentByRegistrationNumber(String registrationNumber) {
-		Student student = studentRepository.findByRegistrationNumber(registrationNumber)
+	public StudentDto getStudentByRollNumber(String rollNumber) {
+		Student student = studentRepository.findByRollNumber(rollNumber)
 				.orElseThrow(() -> new StudentNotFoundException(
-						"Student with registration number " + registrationNumber + " not found."));
+						"Student with roll number " + rollNumber + " not found."));
 
 		return studentConverter.toDto(student);
 	}
@@ -118,11 +116,4 @@ public class StudentService {
 
 		return students;
 	}
-
-//	private String getRegistrationNumber() {
-//		// Generate a unique registration number
-//		String year = String.valueOf(Year.now().getValue());
-//		long count = studentRepository.count() + 1;
-//		return "STU" + year + String.format("%03d", count);
-//	}
 }

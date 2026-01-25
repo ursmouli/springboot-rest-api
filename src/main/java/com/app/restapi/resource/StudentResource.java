@@ -42,9 +42,9 @@ public class StudentResource {
         return ResponseEntity.ok(savedStudent);
 	}
 	
-	@GetMapping("/find/{registrationNumber}")
-    public ResponseEntity<StudentDto> getStudentByRegistrationNumber(@PathVariable String registrationNumber) {
-		StudentDto student = studentService.getStudentByRegistrationNumber(registrationNumber);
+	@GetMapping("/find/{rollNumber}")
+    public ResponseEntity<StudentDto> getStudentByRollNumber(@PathVariable String rollNumber) {
+		StudentDto student = studentService.getStudentByRollNumber(rollNumber);
         return ResponseEntity.ok(student);
     }
 
