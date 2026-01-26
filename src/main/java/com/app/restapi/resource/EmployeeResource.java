@@ -39,4 +39,10 @@ public class EmployeeResource {
         EmployeeDto employee = employeeService.getEmployeeByNumber(employeeNumber);
         return ResponseEntity.ok(employee);
     }
+
+    @PostMapping("/add/department")
+    public ResponseEntity<EmployeeDto> assignEmployeeToDepartment(@RequestBody EmployeeDto employee) {
+        EmployeeDto updatedEmployee = employeeService.saveEmployeeToDepartment(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
 }

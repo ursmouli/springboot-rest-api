@@ -1,6 +1,6 @@
 package com.app.restapi.jpa.entity;
 
-import com.app.restapi.model.Roles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class Employee {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = true)
+    @Column
     private String middleName;
 
     @Column( nullable = false)
@@ -54,6 +54,14 @@ public class Employee {
     private String maritalStatus;
 
     private String previousEmployment;
+
+    private String email;
+
+    // Many employees belong to one department
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @PrePersist
     public void generateEmployeeNumber() {
@@ -197,6 +205,24 @@ public class Employee {
 
     public Employee setPreviousEmployment(String previousEmployment) {
         this.previousEmployment = previousEmployment;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Employee setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Employee setDepartment(Department department) {
+        this.department = department;
         return this;
     }
 }

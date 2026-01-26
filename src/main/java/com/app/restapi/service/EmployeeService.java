@@ -1,12 +1,13 @@
 package com.app.restapi.service;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.app.restapi.converter.EmployeeConverter;
 import com.app.restapi.dto.EmployeeDto;
 import com.app.restapi.dto.PaginationDto;
-import com.app.restapi.dto.StudentDto;
-import com.app.restapi.exceptions.StudentNotFoundException;
+import com.app.restapi.jpa.entity.Department;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Student;
+import com.app.restapi.jpa.repo.DepartmentRepository;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.specifications.EmployeeSpecification;
 import com.app.restapi.model.SortDirection;
@@ -22,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,10 +35,14 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeConverter employeeConverter;
+    private final DepartmentRepository departmentRepository;
 
-    public  EmployeeService(EmployeeRepository employeeRepository, EmployeeConverter employeeConverter) {
+    public  EmployeeService(EmployeeRepository employeeRepository,
+                            EmployeeConverter employeeConverter,
+                            DepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.employeeConverter = employeeConverter;
+        this.departmentRepository = departmentRepository;
     }
 
     @Transactional
@@ -65,6 +71,36 @@ public class EmployeeService {
         log.info("Employee save with Number {}", dbEmployee.getEmployeeNumber());
 
         return employeeConverter.toDto(dbEmployee);
+    }
+
+    @Transactional
+    public EmployeeDto saveEmployeeToDepartment(EmployeeDto employeeDto) {
+
+        if (StringUtil.isNullOrEmpty(employeeDto.getDepartmentName())) {
+            throw new RuntimeException("Department name is required");
+        }
+
+        Employee employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber()).orElseThrow(EntityNotFoundException::new);
+
+        Optional<Department> dbDepartment = departmentRepository.findByNameEqualsIgnoreCase(employeeDto.getDepartmentName().toLowerCase());
+
+        if (dbDepartment.isPresent()) {
+            log.info("Department {} already exists adding employee {} to the department",
+                    employeeDto.getDepartmentName(), employeeDto.getEmployeeNumber());
+
+            employee.setDepartment(dbDepartment.get());
+        } else {
+            log.info("Department {} doesn't exists. Creating and adding employee {} to the department",
+                    employeeDto.getDepartmentName(), employeeDto.getEmployeeNumber());
+
+            Department newDepartment = departmentRepository.save(new Department().setName(employeeDto.getDepartmentName()));
+
+            employee.setDepartment(newDepartment);
+        }
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        return employeeConverter.toDto(savedEmployee);
     }
 
     @Transactional

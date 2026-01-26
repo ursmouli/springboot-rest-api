@@ -1,13 +1,12 @@
 package com.app.restapi.dto;
 
-import com.app.restapi.model.Roles;
-
 public class EmployeeDto extends RegistrationDto<EmployeeInfo, EmployeeDto> {
 
     private String employeeNumber;
     private String maritalStatus;
     private String previousEmployment;
     private String role;
+    private String departmentName;
 
     public String getEmployeeNumber() {
         return employeeNumber;
@@ -42,6 +41,15 @@ public class EmployeeDto extends RegistrationDto<EmployeeInfo, EmployeeDto> {
 
     public EmployeeDto setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public EmployeeDto setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
         return this;
     }
 }

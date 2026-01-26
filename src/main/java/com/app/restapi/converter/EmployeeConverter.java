@@ -2,6 +2,7 @@ package com.app.restapi.converter;
 
 import com.app.restapi.dto.EmployeeDto;
 import com.app.restapi.dto.GuardianDto;
+import com.app.restapi.jpa.entity.Department;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Guardian;
 import com.app.restapi.jpa.entity.Sibling;
@@ -39,7 +40,8 @@ public class EmployeeConverter implements GenericConverter<Employee, EmployeeDto
                 .setSameAsPermanentAddress(dto.isSameAsPermanentAddress())
                 .setMartialStatus(dto.getMaritalStatus())
                 .setRole(dto.getRole())
-                .setPreviousEmployment(dto.getPreviousEmployment());
+                .setPreviousEmployment(dto.getPreviousEmployment())
+                .setDepartment(new Department().setName(dto.getDepartmentName()));
 
         if (dto.getPermanentAddress() != null) {
             entity.setPermanentAddress(addressConverter.toEntity(dto.getPermanentAddress()));
@@ -50,17 +52,13 @@ public class EmployeeConverter implements GenericConverter<Employee, EmployeeDto
 
         if (!dto.getGuardians().isEmpty()) {
             List<Guardian> guardiansList = new ArrayList<>();
-            dto.getGuardians().forEach(guardianDto -> {
-                guardiansList.add(guardianConverter.toEntity(guardianDto));
-            });
+            dto.getGuardians().forEach(guardianDto -> guardiansList.add(guardianConverter.toEntity(guardianDto)));
             entity.setGuardians(guardiansList);
         }
 
         if (!dto.getSiblings().isEmpty()) {
             List<Sibling> siblingList = new ArrayList<>();
-            dto.getSiblings().forEach(siblingDto -> {
-                siblingList.add(siblingConverter.toEntity(siblingDto));
-            });
+            dto.getSiblings().forEach(siblingDto -> siblingList.add(siblingConverter.toEntity(siblingDto)));
             entity.setSiblings(siblingList);
         }
 
@@ -82,7 +80,8 @@ public class EmployeeConverter implements GenericConverter<Employee, EmployeeDto
                 .setSameAsPermanentAddress(entity.isSameAsPermanentAddress())
                 .setMaritalStatus(entity.getMartialStatus())
                 .setPreviousEmployment(entity.getPreviousEmployment())
-                .setRole(entity.getRole());
+                .setRole(entity.getRole())
+                .setDepartmentName(entity.getDepartment() != null ? entity.getDepartment().getName() : null);
 
         if (entity.getPermanentAddress() != null) {
             dto.setPermanentAddress(addressConverter.toDto(entity.getPermanentAddress()));
@@ -93,9 +92,7 @@ public class EmployeeConverter implements GenericConverter<Employee, EmployeeDto
 
         if (!entity.getGuardians().isEmpty()) {
             List<GuardianDto> guardians = new ArrayList<>();
-            entity.getGuardians().forEach(guardian -> {
-                guardians.add(guardianConverter.toDto(guardian));
-            });
+            entity.getGuardians().forEach(guardian -> guardians.add(guardianConverter.toDto(guardian)));
             dto.setGuardians(guardians);
         }
 

@@ -22,16 +22,20 @@ public class EmployeeInitializer implements CommandLineRunner {
     private final DistrictRepository districtRepository;
     private final TalukRepository talukRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     public EmployeeInitializer(EmployeeRepository employeeRepository,
                               CountryRepository countryRepository,
                               StateRepository stateRepository,
                               DistrictRepository districtRepository,
-                              TalukRepository talukRepository) {
+                              TalukRepository talukRepository,
+                               DepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.countryRepository = countryRepository;
         this.stateRepository = stateRepository;
         this.districtRepository = districtRepository;
         this.talukRepository = talukRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
@@ -65,6 +69,17 @@ public class EmployeeInitializer implements CommandLineRunner {
 
         List<String> firstNames = List.of("Jane", "John", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona");
         List<String> lastNames = List.of("Doe", "Smith", "Johnson", "Brown", "Taylor", "Miller", "Wilson");
+        List<Taluk> talukList = List.of(manvi, sindhanur);
+
+        Department engineering = new Department().setName("Engineering");
+        Department hr = new Department().setName("HR");
+        Department finance = new Department().setName("Finance");
+        Department marketing = new Department().setName("Marketing");
+        Department operations = new Department().setName("Operations");
+
+        List<Department> departments = departmentRepository.saveAll(List.of(
+                engineering, hr, finance, marketing, operations));
+
         Random random = new Random();
 
         List<Employee> employees = new ArrayList<>();
@@ -73,9 +88,14 @@ public class EmployeeInitializer implements CommandLineRunner {
             String fName = firstNames.get(random.nextInt(firstNames.size()));
             String lName = lastNames.get(random.nextInt(lastNames.size()));
 
+            Taluk taluk = talukList.get(random.nextInt(talukList.size()));
+
+            Department department = departments.get(random.nextInt(departments.size()));
+
             Employee employee = new Employee()
                     .setFirstName(fName)
                     .setLastName(lName)
+                    .setEmail(firstNames + "" + random.nextInt(3) + "@mail.com")
                     .setDob(LocalDate.now().minusYears(15 + random.nextInt(10))) // Random age 15-25
                     .setGender(random.nextBoolean() ? "M" : "F")
                     .setSameAsPermanentAddress(true)
@@ -87,8 +107,9 @@ public class EmployeeInitializer implements CommandLineRunner {
                             .setCountry(country)
                             .setState(state)
                             .setDistrict(district)
-                            .setTaluk(sindhanur)
-                    );
+                            .setTaluk(taluk)
+                    )
+                    .setDepartment(department);
 
             employees.add(employee);
         }
