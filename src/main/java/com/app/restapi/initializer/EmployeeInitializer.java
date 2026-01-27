@@ -71,6 +71,8 @@ public class EmployeeInitializer implements CommandLineRunner {
         List<String> lastNames = List.of("Doe", "Smith", "Johnson", "Brown", "Taylor", "Miller", "Wilson");
         List<Taluk> talukList = List.of(manvi, sindhanur);
 
+        List<String> roles = List.of("Teacher", "Administrator", "Developer",  "Operations", "Finance", "Manager");
+
         Department engineering = new Department().setName("Engineering");
         Department hr = new Department().setName("HR");
         Department finance = new Department().setName("Finance");
@@ -89,6 +91,8 @@ public class EmployeeInitializer implements CommandLineRunner {
             String lName = lastNames.get(random.nextInt(lastNames.size()));
 
             Taluk taluk = talukList.get(random.nextInt(talukList.size()));
+
+            String role = roles.get(random.nextInt(roles.size()));
 
             Department department = departments.get(random.nextInt(departments.size()));
 
@@ -109,7 +113,8 @@ public class EmployeeInitializer implements CommandLineRunner {
                             .setDistrict(district)
                             .setTaluk(taluk)
                     )
-                    .setDepartment(department);
+                    .setDepartment(department)
+                    .setRole(role);
 
             employees.add(employee);
         }

@@ -130,7 +130,13 @@ public class EmployeeService {
 
         Page<EmployeeDto> employees;
         if (pagination.getSearchTerm() != null && !pagination.getSearchTerm().trim().isEmpty()) {
-            Specification<Employee> spec = EmployeeSpecification.hasSearchText(pagination.getSearchTerm());
+            Specification<Employee> spec;
+
+            if (pagination.getSearchTerm().toLowerCase().contains(":")) {
+                spec = EmployeeSpecification.hasSearchField(pagination.getSearchTerm());
+            } else {
+                spec = EmployeeSpecification.hasSearchText(pagination.getSearchTerm());
+            }
 
             Page<Employee> all = employeeRepository.findAll(spec, pageable);
             if (all == null || all.getTotalElements() == 0) {
