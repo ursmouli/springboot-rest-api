@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Integer>, JpaSpecificationExecutor<Employee> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
 
     Optional<Employee> findByEmployeeNumber(String employeeNumber);
 
     // Custom query to find all teachers in a specific department
     List<Employee> findByDepartmentName(String deptName);
+
+
+    List<Employee> findByRole(String role);
 
 }

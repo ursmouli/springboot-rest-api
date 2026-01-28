@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeResource {
@@ -38,6 +40,12 @@ public class EmployeeResource {
     public ResponseEntity<EmployeeDto> getStudentByRollNumber(@PathVariable String employeeNumber) {
         EmployeeDto employee = employeeService.getEmployeeByNumber(employeeNumber);
         return ResponseEntity.ok(employee);
+    }
+
+    @GetMapping("/find/teachers")
+    public ResponseEntity<List<EmployeeDto>> getEmployeeTeachers() {
+        List<EmployeeDto> employees = employeeService.getTeachers();
+        return ResponseEntity.ok(employees);
     }
 
     @PostMapping("/add/department")

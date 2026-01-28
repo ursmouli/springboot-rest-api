@@ -10,6 +10,7 @@ import com.app.restapi.jpa.entity.Student;
 import com.app.restapi.jpa.repo.DepartmentRepository;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.specifications.EmployeeSpecification;
+import com.app.restapi.model.Roles;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -154,5 +156,10 @@ public class EmployeeService {
         }
 
         return employees;
+    }
+
+    public List<EmployeeDto> getTeachers() {
+        // TODO replace string input with Enum
+        return employeeConverter.toDtoList(employeeRepository.findByRole("TEACHER"));
     }
 }
