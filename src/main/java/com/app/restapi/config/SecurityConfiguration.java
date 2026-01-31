@@ -49,6 +49,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/properties/**").permitAll()
                         .requestMatchers("/api/roles/**").permitAll()
                         .requestMatchers("/api/locations/**").permitAll()
+                        .requestMatchers("/api/classes/**").permitAll()
+                        .requestMatchers("/api/sections/**").permitAll()
                         .anyRequest().authenticated()
     		).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

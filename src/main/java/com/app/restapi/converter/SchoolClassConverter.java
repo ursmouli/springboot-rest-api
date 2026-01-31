@@ -8,11 +8,17 @@ import org.springframework.stereotype.Component;
 public class SchoolClassConverter implements GenericConverter<SchoolClass, SchoolClassDto> {
     @Override
     public SchoolClass toEntity(SchoolClassDto dto) {
-        return new SchoolClass().setId(dto.getId()).setName(dto.getName());
+        return new SchoolClass()
+                .setId(dto.getId())
+                .setName(dto.getName())
+                .setAcademicYear(dto.getAcademicYear());
     }
 
     @Override
     public SchoolClassDto toDto(SchoolClass entity) {
-        return new SchoolClassDto().setId(entity.getId()).setName(entity.getName());
+        return new SchoolClassDto()
+                .setId(entity.getId())
+                .setName(entity.getName())
+                .setAcademicYear(entity.getAcademicYear());
     }
 }

@@ -14,6 +14,8 @@ public class SchoolClass {
 
     private String name;
 
+    private String academicYear;
+
     public Long getId() {
         return id;
     }
@@ -29,6 +31,15 @@ public class SchoolClass {
 
     public SchoolClass setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public SchoolClass setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
         return this;
     }
 }

@@ -4,6 +4,7 @@ public class SchoolClassDto {
 
     private Long id;
     private String name;
+    private String academicYear;
 
     public Long getId() {
         return id;
@@ -20,6 +21,15 @@ public class SchoolClassDto {
 
     public SchoolClassDto setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public SchoolClassDto setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
         return this;
     }
 }
