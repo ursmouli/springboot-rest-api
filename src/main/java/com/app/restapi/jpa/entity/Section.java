@@ -3,29 +3,20 @@ package com.app.restapi.jpa.entity;
 import jakarta.persistence.*;
 
 @Entity
+@IdClass(SectionId.class)
 public class Section {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String name;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "class_id")
     private SchoolClass schoolClass;
 
-    @OneToOne
+    @Id
+    @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Employee classTeacher;
-
-    public Long getId() {
-        return id;
-    }
-
-    public Section setId(Long id) {
-        this.id = id;
-        return this;
-    }
 
     public String getName() {
         return name;

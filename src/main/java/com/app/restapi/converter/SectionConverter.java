@@ -19,7 +19,6 @@ public class SectionConverter implements GenericConverter<Section, SectionDto> {
     @Override
     public Section toEntity(SectionDto dto) {
         return new Section()
-                .setId(dto.getId())
                 .setName(dto.getName())
                 .setClassTeacher(employeeConverter.toEntity(dto.getClassTeacher()))
                 .setSchoolClass(schoolClassConverter.toEntity(dto.getSchoolClass()));
@@ -28,7 +27,6 @@ public class SectionConverter implements GenericConverter<Section, SectionDto> {
     @Override
     public SectionDto toDto(Section entity) {
         return new SectionDto()
-                .setId(entity.getId())
                 .setName(entity.getName())
                 .setClassTeacher(employeeConverter.toDto(entity.getClassTeacher()))
                 .setSchoolClass(schoolClassConverter.toDto(entity.getSchoolClass()));

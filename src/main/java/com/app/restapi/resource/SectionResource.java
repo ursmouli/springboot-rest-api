@@ -5,6 +5,7 @@ import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.SectionDto;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Section;
+import com.app.restapi.jpa.entity.SectionId;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
@@ -45,17 +46,23 @@ public class SectionResource {
         return ResponseEntity.ok(sectionService.createClassSection(section));
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<SectionDto> updateSection(
+            @RequestBody SectionDto section) {
+        return ResponseEntity.ok(sectionService.createClassSection(section));
+    }
+
     @PostMapping("/all")
     public ResponseEntity<Page<SectionDto>> getSections(@RequestBody PaginationDto pagination) {
         return ResponseEntity.ok(sectionService.fetchSections(pagination));
     }
 
-    @PutMapping("/{sectionId}/assign-teacher/{employeeId}")
+    @PutMapping("/{classId}/assign-teacher/{employeeId}")
     public ResponseEntity<SectionDto> assignTeacher(
-            @PathVariable Long sectionId,
+            @PathVariable Long classId,
             @PathVariable Long employeeId) {
 
-        return sectionRepository.findById(sectionId).map(section -> {
+        return sectionRepository.findById(new SectionId().setSchoolClass(classId).setClassTeacher(employeeId)).map(section -> {
             Employee teacher = employeeRepository.findById(employeeId)
                     .filter(e -> AppRole.TEACHER.equals(e.getRole()))
                     .orElseThrow(() -> new RuntimeException("Teacher not found or invalid role"));

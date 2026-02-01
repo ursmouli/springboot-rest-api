@@ -7,6 +7,7 @@ import com.app.restapi.dto.SectionDto;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.SchoolClass;
 import com.app.restapi.jpa.entity.Section;
+import com.app.restapi.jpa.entity.SectionId;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
@@ -15,6 +16,7 @@ import com.app.restapi.jpa.specifications.SectionSpecification;
 import com.app.restapi.model.AppRole;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -57,11 +59,34 @@ public class SectionService {
 //        }).orElse(ResponseEntity.notFound().build());
 
     @Transactional
+    public SectionDto updateClassSection(SectionDto section) {
+        Section entity = sectionConverter.toEntity(section);
+
+        if (sectionRepository.existsBySchoolClassIdAndClassTeacherId(section.getSchoolClass().getId(), section.getClassTeacher().getId())) {
+            throw new IllegalStateException("This teacher is already assigned to this class.");
+        }
+
+        entity.setSchoolClass(schoolClassRepository.getReferenceById(section.getSchoolClass().getId()));
+
+        Employee employee = employeeRepository.findById(section.getClassTeacher().getId())
+                .filter(e -> AppRole.TEACHER.equals(e.getRole())).
+                orElseThrow(() -> new RuntimeException("Teacher not found or invalid role"));
+
+        entity.setClassTeacher(employee);
+
+        return sectionConverter.toDto(sectionRepository.save(entity));
+    }
+
+    @Transactional
     public SectionDto createClassSection(SectionDto section) {
 
         Section entity = sectionConverter.toEntity(section);
 
         entity.setSchoolClass(schoolClassRepository.getReferenceById(section.getSchoolClass().getId()));
+
+        if (sectionRepository.existsBySchoolClassIdAndClassTeacherId(section.getSchoolClass().getId(), section.getClassTeacher().getId())) {
+            throw new IllegalStateException("This teacher is already assigned to class " + section.getSchoolClass().getId());
+        }
 
         Employee employee = employeeRepository.findById(section.getClassTeacher().getId())
                 .filter(e -> AppRole.TEACHER.equals(e.getRole())).
@@ -81,14 +106,17 @@ public class SectionService {
             throw new IllegalArgumentException("Selected employee is not a teacher!");
         }
 
-        Section section = sectionRepository.findById(sectionId).orElseThrow(() -> new RuntimeException("Section not found"));
+        Section section = sectionRepository.findById(new SectionId()
+                        .setClassTeacher(employeeId)
+                        .setSchoolClass(sectionId))
+                .orElseThrow(() -> new RuntimeException("Section not found"));
         section.setClassTeacher(employee);
 
         return sectionRepository.save(section);
     }
 
     @Transactional
-    public Page<SectionDto> fetchSections(PaginationDto  pagination) {
+    public Page<SectionDto> fetchSections(PaginationDto pagination) {
 
         log.debug("pagination: {}", pagination);
         if (!ALLOWED_SORT_FIELDS.contains(pagination.getSortField())) {
