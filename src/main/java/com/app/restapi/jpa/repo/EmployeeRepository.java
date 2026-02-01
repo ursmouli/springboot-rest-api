@@ -1,6 +1,7 @@
 package com.app.restapi.jpa.repo;
 
 import com.app.restapi.jpa.entity.Employee;
+import com.app.restapi.model.AppRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -15,6 +16,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
     List<Employee> findByDepartmentName(String deptName);
 
 
-    List<Employee> findByRole(String role);
+    List<Employee> findByRole(AppRole role);
 
 }

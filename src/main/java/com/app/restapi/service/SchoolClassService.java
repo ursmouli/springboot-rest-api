@@ -6,7 +6,6 @@ import com.app.restapi.dto.SchoolClassDto;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.SchoolClass;
 import com.app.restapi.jpa.entity.Section;
-import com.app.restapi.jpa.entity.Student;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
@@ -23,12 +22,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
-public class ClassSectionService {
+public class SchoolClassService {
 
-    private static final Logger log = LoggerFactory.getLogger(ClassSectionService.class);
+    private static final Logger log = LoggerFactory.getLogger(SchoolClassService.class);
 
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("name", "academicYear");
 
@@ -37,7 +37,7 @@ public class ClassSectionService {
     private final SchoolClassRepository schoolClassRepository;
     private final SchoolClassConverter schoolClassConverter;
 
-    public  ClassSectionService(EmployeeRepository employeeRepository,
+    public  SchoolClassService(EmployeeRepository employeeRepository,
                                 SectionRepository sectionRepository,
                                 SchoolClassRepository schoolClassRepository,
                                 SchoolClassConverter schoolClassConverter) {
@@ -47,19 +47,6 @@ public class ClassSectionService {
         this.schoolClassConverter = schoolClassConverter;
     }
 
-    public Section assignTeacherToSection(Long sectionId, Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-
-        if (!"TEACHER".equals(employee.getRole())) {
-            throw new IllegalArgumentException("Selected employee is not a teacher!");
-        }
-
-        Section section = sectionRepository.findById(sectionId).orElseThrow(() -> new RuntimeException("Section not found"));
-        section.setClassTeacher(employee);
-
-        return sectionRepository.save(section);
-    }
 
     @Transactional
     public SchoolClassDto saveClass(SchoolClassDto schoolClass) {
@@ -112,5 +99,9 @@ public class ClassSectionService {
         }
 
         return schoolClasses;
+    }
+
+    public List<SchoolClassDto> getSchoolClasses() {
+        return schoolClassConverter.toDtoList(schoolClassRepository.findAll());
     }
 }

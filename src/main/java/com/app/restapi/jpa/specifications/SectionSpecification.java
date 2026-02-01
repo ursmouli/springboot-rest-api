@@ -1,17 +1,16 @@
 package com.app.restapi.jpa.specifications;
 
-import com.app.restapi.jpa.entity.Employee;
-import com.app.restapi.jpa.entity.SchoolClass;
+import com.app.restapi.jpa.entity.Section;
 import jakarta.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
-public class SchoolClassSpecification {
+public class SectionSpecification {
 
-    private static final Logger logger = LoggerFactory.getLogger(SchoolClassSpecification.class);
+    private static final Logger logger = LoggerFactory.getLogger(SectionSpecification.class);
 
-    public static Specification<SchoolClass> hasSearchText(String searchTerm) {
+    public static Specification<Section> hasSearchText(String searchTerm) {
         return ((root, query, cb) -> {
             if (searchTerm == null || searchTerm.isEmpty()) {
                 return cb.conjunction();
@@ -19,16 +18,15 @@ public class SchoolClassSpecification {
 
             String pattern = "%" + searchTerm.toLowerCase().trim() + "%";
 
-            logger.info("Student search pattern '{}'", pattern);
+            logger.info("Section search pattern '{}'", pattern);
 
             Predicate nameLike = cb.like(cb.lower(root.get("name").as(String.class)), pattern);
-            Predicate academicYearLike = cb.like(cb.lower(root.get("academicYear").as(String.class)), pattern);
 
-            return cb.or(nameLike, academicYearLike);
+            return cb.or(nameLike);
         });
     }
 
-    public static Specification<SchoolClass> hasSearchField(String searchTerm) {
+    public static Specification<Section> hasSearchField(String searchTerm) {
         return ((root, query, cb) -> {
             if (searchTerm == null || !searchTerm.contains(":")) {
                 return cb.conjunction();
@@ -39,7 +37,7 @@ public class SchoolClassSpecification {
 
             String pattern = "%" + value.toLowerCase().trim() + "%";
 
-            logger.info("SchoolClass search field {} and value '{}'", field, pattern);
+            logger.info("Section search field {} and value '{}'", field, pattern);
 
             // department and role are supported
 
@@ -50,5 +48,4 @@ public class SchoolClassSpecification {
             }
         });
     }
-
 }

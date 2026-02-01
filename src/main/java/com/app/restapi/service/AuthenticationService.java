@@ -3,7 +3,7 @@ package com.app.restapi.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.app.restapi.model.Roles;
+import com.app.restapi.model.AppRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +17,6 @@ import com.app.restapi.dto.RegisterUserDto;
 import com.app.restapi.jpa.repo.ContactDetailsRepository;
 import com.app.restapi.jpa.repo.RoleRepository;
 import com.app.restapi.jpa.entity.ContactDetails;
-import com.app.restapi.jpa.entity.Role;
 
 @Service
 public class AuthenticationService {
@@ -54,9 +53,9 @@ public class AuthenticationService {
 		contactDetails.setEmail(input.getEmail());
 		contactDetails.setPassword(passwordEncoder.encode(input.getPassword()));
 		
-		Set<Role> roles = new HashSet<>();
+		Set<com.app.restapi.jpa.entity.Role> roles = new HashSet<>();
 		for (String roleName : input.getRoles()) {
-			Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found:" + roleName));
+			com.app.restapi.jpa.entity.Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found:" + roleName));
 			roles.add(role);
 		}
 		
@@ -70,7 +69,7 @@ public class AuthenticationService {
 	private void setDefaultUserRoleIfMissing(RegisterUserDto dto) {
 		if (CollectionUtils.isEmpty(dto.getRoles())) {
 			logger.info("Roles missing for user {} from registration input. Setting default to user role", dto.getEmail());
-			dto.setRoles(Set.of(Roles.ROLE_USER.name()));
+			dto.setRoles(Set.of("ROL_E" + AppRole.USER.name()));
 		}
 	}
 	

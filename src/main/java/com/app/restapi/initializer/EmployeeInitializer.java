@@ -2,6 +2,7 @@ package com.app.restapi.initializer;
 
 import com.app.restapi.jpa.entity.*;
 import com.app.restapi.jpa.repo.*;
+import com.app.restapi.model.AppRole;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -71,7 +73,9 @@ public class EmployeeInitializer implements CommandLineRunner {
         List<String> lastNames = List.of("Doe", "Smith", "Johnson", "Brown", "Taylor", "Miller", "Wilson");
         List<Taluk> talukList = List.of(manvi, sindhanur);
 
-        List<String> roles = List.of("Teacher", "Administrator", "Developer",  "Operations", "Finance", "Manager");
+        //List<String> roles = List.of("Teacher", "Administrator", "Developer",  "Operations", "Finance", "Manager");
+
+        List<AppRole> roles = Arrays.stream(AppRole.values()).toList();
 
         Department engineering = new Department().setName("Engineering");
         Department hr = new Department().setName("HR");
@@ -92,7 +96,7 @@ public class EmployeeInitializer implements CommandLineRunner {
 
             Taluk taluk = talukList.get(random.nextInt(talukList.size()));
 
-            String role = roles.get(random.nextInt(roles.size()));
+            AppRole role = roles.get(random.nextInt(roles.size()));
 
             Department department = departments.get(random.nextInt(departments.size()));
 

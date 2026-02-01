@@ -1,5 +1,6 @@
 package com.app.restapi.jpa.entity;
 
+import com.app.restapi.model.AppRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -48,8 +49,8 @@ public class Employee {
 
     private boolean sameAsPermanentAddress;
 
-//    @Enumerated(EnumType.STRING)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private AppRole role;
 
     private String maritalStatus;
 
@@ -181,11 +182,11 @@ public class Employee {
         return this;
     }
 
-    public String getRole() {
+    public AppRole getRole() {
         return role;
     }
 
-    public Employee setRole(String role) {
+    public Employee setRole(AppRole role) {
         this.role = role;
         return this;
     }

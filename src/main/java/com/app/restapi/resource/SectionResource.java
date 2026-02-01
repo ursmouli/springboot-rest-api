@@ -1,12 +1,16 @@
 package com.app.restapi.resource;
 
 import com.app.restapi.converter.SectionConverter;
+import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.SectionDto;
 import com.app.restapi.jpa.entity.Employee;
 import com.app.restapi.jpa.entity.Section;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
+import com.app.restapi.model.AppRole;
+import com.app.restapi.service.SectionService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +24,30 @@ public class SectionResource {
     private final SchoolClassRepository schoolClassRepository;
     private final SectionConverter sectionConverter;
 
+    private final SectionService sectionService;
+
     public SectionResource(SectionRepository sectionRepository,
                            SchoolClassRepository classRepository,
                            SectionConverter sectionConverter,
-                           EmployeeRepository employeeRepository) {
+                           EmployeeRepository employeeRepository,
+                           SectionService sectionService) {
         this.sectionRepository = sectionRepository;
         this.employeeRepository = employeeRepository;
         this.schoolClassRepository = classRepository;
         this.sectionConverter = sectionConverter;
+
+        this.sectionService = sectionService;
     }
 
-    @PostMapping("/class/{classId}")
+    @PostMapping("/add")
     public ResponseEntity<SectionDto> createSection(
-            @PathVariable Long classId,
-            @RequestBody Section section) {
+            @RequestBody SectionDto section) {
+        return ResponseEntity.ok(sectionService.createClassSection(section));
+    }
 
-        return schoolClassRepository.findById(classId).map(schoolClass -> {
-            section.setSchoolClass(schoolClass); // Link Section to Class
-            Section savedSection = sectionRepository.save(section);
-            return new ResponseEntity<>(sectionConverter.toDto(savedSection), HttpStatus.CREATED);
-        }).orElse(ResponseEntity.notFound().build());
+    @PostMapping("/all")
+    public ResponseEntity<Page<SectionDto>> getSections(@RequestBody PaginationDto pagination) {
+        return ResponseEntity.ok(sectionService.fetchSections(pagination));
     }
 
     @PutMapping("/{sectionId}/assign-teacher/{employeeId}")
@@ -49,7 +57,7 @@ public class SectionResource {
 
         return sectionRepository.findById(sectionId).map(section -> {
             Employee teacher = employeeRepository.findById(employeeId)
-                    .filter(e -> "TEACHER".equals(e.getRole()))
+                    .filter(e -> AppRole.TEACHER.equals(e.getRole()))
                     .orElseThrow(() -> new RuntimeException("Teacher not found or invalid role"));
 
             section.setClassTeacher(teacher);

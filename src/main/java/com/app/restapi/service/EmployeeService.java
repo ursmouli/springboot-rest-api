@@ -10,7 +10,7 @@ import com.app.restapi.jpa.entity.Student;
 import com.app.restapi.jpa.repo.DepartmentRepository;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.specifications.EmployeeSpecification;
-import com.app.restapi.model.Roles;
+import com.app.restapi.model.AppRole;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -158,8 +158,8 @@ public class EmployeeService {
         return employees;
     }
 
+    @Transactional
     public List<EmployeeDto> getTeachers() {
-        // TODO replace string input with Enum
-        return employeeConverter.toDtoList(employeeRepository.findByRole("TEACHER"));
+        return employeeConverter.toDtoList(employeeRepository.findByRole(AppRole.TEACHER));
     }
 }
