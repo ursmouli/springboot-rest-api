@@ -1,9 +1,9 @@
 package com.app.restapi.jpa.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class SchoolClass {
@@ -15,6 +15,20 @@ public class SchoolClass {
     private String name;
 
     private String academicYear;
+
+    @ManyToMany
+    @JoinTable(
+            name = "class_subjects",
+            joinColumns = @JoinColumn(name = "class_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private Set<Subject> subjects = new HashSet<>();
+
+    // helper method
+    public void addSubject(Subject subject) {
+        this.subjects.add(subject);
+        subject.getSchoolClasses().add(this);
+    }
 
     public Long getId() {
         return id;
@@ -40,6 +54,15 @@ public class SchoolClass {
 
     public SchoolClass setAcademicYear(String academicYear) {
         this.academicYear = academicYear;
+        return this;
+    }
+
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public SchoolClass setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
         return this;
     }
 }
