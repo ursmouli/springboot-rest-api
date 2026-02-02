@@ -1,5 +1,7 @@
-package com.app.restapi.exceptions;
+package com.app.restapi.exceptions.handler;
 
+import com.app.restapi.exceptions.ErrorResponse;
+import com.app.restapi.exceptions.StudentNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
@@ -15,7 +17,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice

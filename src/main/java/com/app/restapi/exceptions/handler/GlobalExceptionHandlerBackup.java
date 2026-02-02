@@ -1,4 +1,4 @@
-package com.app.restapi.exception;
+package com.app.restapi.exceptions.handler;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -6,13 +6,11 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.app.restapi.exceptions.StudentNotFoundException;
 
 //@ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandlerBackup {
 
 //	@ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<Object> handleStudentNotFoundException(StudentNotFoundException ex) {
