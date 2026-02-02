@@ -4,15 +4,12 @@ import com.app.restapi.converter.SectionConverter;
 import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.SectionDto;
 import com.app.restapi.jpa.entity.Employee;
-import com.app.restapi.jpa.entity.Section;
 import com.app.restapi.jpa.entity.SectionId;
 import com.app.restapi.jpa.repo.EmployeeRepository;
-import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
 import com.app.restapi.model.AppRole;
 import com.app.restapi.service.SectionService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,19 +19,16 @@ public class SectionResource {
 
     private final SectionRepository sectionRepository;
     private final EmployeeRepository employeeRepository;
-    private final SchoolClassRepository schoolClassRepository;
     private final SectionConverter sectionConverter;
 
     private final SectionService sectionService;
 
     public SectionResource(SectionRepository sectionRepository,
-                           SchoolClassRepository classRepository,
                            SectionConverter sectionConverter,
                            EmployeeRepository employeeRepository,
                            SectionService sectionService) {
         this.sectionRepository = sectionRepository;
         this.employeeRepository = employeeRepository;
-        this.schoolClassRepository = classRepository;
         this.sectionConverter = sectionConverter;
 
         this.sectionService = sectionService;
@@ -70,6 +64,12 @@ public class SectionResource {
             section.setClassTeacher(teacher);
             return ResponseEntity.ok(sectionConverter.toDto(sectionRepository.save(section)));
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/delete/{classId}/{teacherId}")
+    public ResponseEntity<Void> deleteSection(@PathVariable Long classId, @PathVariable Long teacherId) {
+        sectionService.deleteClassSection(classId, teacherId);
+        return ResponseEntity.noContent().build();
     }
 
 }

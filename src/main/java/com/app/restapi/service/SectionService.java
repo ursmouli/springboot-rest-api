@@ -116,6 +116,18 @@ public class SectionService {
     }
 
     @Transactional
+    public void deleteClassSection(Long classId, Long classTeacherId) {
+
+        // throw error if classId doesn't exist
+        schoolClassRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
+
+        // throw error classTeacherId doesn't exist
+        employeeRepository.findById(classTeacherId).orElseThrow(() -> new RuntimeException("Teacher not found"));
+
+        sectionRepository.deleteBySchoolClassIdAndClassTeacherId(classId, classTeacherId);
+    }
+
+    @Transactional
     public Page<SectionDto> fetchSections(PaginationDto pagination) {
 
         log.debug("pagination: {}", pagination);
