@@ -1,16 +1,12 @@
 package com.app.restapi.service;
 
 import com.app.restapi.converter.SectionConverter;
-import com.app.restapi.dto.PaginationDto;
-import com.app.restapi.dto.SchoolClassDto;
-import com.app.restapi.dto.SectionDto;
-import com.app.restapi.jpa.entity.Employee;
-import com.app.restapi.jpa.entity.SchoolClass;
-import com.app.restapi.jpa.entity.Section;
-import com.app.restapi.jpa.entity.SectionId;
+import com.app.restapi.dto.*;
+import com.app.restapi.jpa.entity.*;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
+import com.app.restapi.jpa.repo.SubjectRepository;
 import com.app.restapi.jpa.specifications.SchoolClassSpecification;
 import com.app.restapi.jpa.specifications.SectionSpecification;
 import com.app.restapi.model.AppRole;
@@ -28,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -41,15 +39,18 @@ public class SectionService {
     private final SchoolClassRepository schoolClassRepository;
     private final SectionConverter sectionConverter;
     private final EmployeeRepository employeeRepository;
+    private final SubjectRepository subjectRepository;
 
     public SectionService(SectionRepository sectionRepository,
                           SchoolClassRepository schoolClassRepository,
                           SectionConverter sectionConverter,
-                          EmployeeRepository employeeRepository) {
+                          EmployeeRepository employeeRepository,
+                          SubjectRepository subjectRepository) {
         this.sectionRepository = sectionRepository;
         this.schoolClassRepository = schoolClassRepository;
         this.sectionConverter = sectionConverter;
         this.employeeRepository = employeeRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     //        return schoolClassRepository.findById(classId).map(schoolClass -> {
@@ -82,7 +83,8 @@ public class SectionService {
 
         Section entity = sectionConverter.toEntity(section);
 
-        entity.setSchoolClass(schoolClassRepository.getReferenceById(section.getSchoolClass().getId()));
+        SchoolClass schoolClass = schoolClassRepository.getReferenceById(section.getSchoolClass().getId());
+        entity.setSchoolClass(schoolClass);
 
         if (sectionRepository.existsBySchoolClassIdAndClassTeacherId(section.getSchoolClass().getId(), section.getClassTeacher().getId())) {
             throw new IllegalStateException("This teacher is already assigned to class " + section.getSchoolClass().getId());
@@ -94,7 +96,62 @@ public class SectionService {
 
         entity.setClassTeacher(employee);
 
+        entity.setId(new SectionId(schoolClass.getId(), section.getClassTeacher().getId()));
+
         return sectionConverter.toDto(sectionRepository.save(entity));
+    }
+
+    @Transactional
+    public SectionDto assignSubjectsToSection(SectionDto sectionDto) {
+
+        // get section
+        Section section = sectionRepository
+                .findById(new SectionId(sectionDto.getSchoolClass().getId(), sectionDto.getClassTeacher().getId()))
+                .orElseThrow(() -> new RuntimeException("Section not found"));
+
+        // get subjects
+        List<Long> subjectIds = new ArrayList<>();
+
+        for (SubjectDto subjectDto : sectionDto.getSubjects()) {
+            subjectIds.add(subjectDto.getId());
+        }
+
+        List<Subject> subjects = subjectRepository.findAllById(subjectIds);
+
+        // save subjects to section
+
+        SectionId sectionId = new SectionId(section.getSchoolClass().getId(), section.getClassTeacher().getId());
+
+        for (Subject subject : subjects) {
+            SectionSubject sectionSubject = new SectionSubject();
+            sectionSubject.setId(new SectionSubjectId(sectionId, subject.getId()));
+            sectionSubject.setSection(section);
+            sectionSubject.setSubject(subject);
+
+            section.getSectionSubjects().add(sectionSubject);
+        }
+
+        Section savedSection = sectionRepository.save(section);
+
+        Set<SectionSubject> savedSectionSubjects = savedSection.getSectionSubjects();
+
+        SectionDto response = new SectionDto();
+        response.setName(savedSection.getName());
+        response.setClassTeacher(response.getClassTeacher());
+
+        response.setSchoolClass(new SchoolClassDto()
+                .setName(savedSection.getSchoolClass().getName())
+                .setId(savedSection.getSchoolClass().getId()));
+
+        if (savedSectionSubjects != null) {
+            List<SubjectDto> subjectsDto = new ArrayList<>();
+
+            savedSectionSubjects.forEach(sectionSubject -> subjectsDto.add(new SubjectDto().setName(sectionSubject.getSubject().getName())));
+
+            response.setSubjects(subjectsDto);
+        }
+
+        return response;
     }
 
     @Transactional
@@ -106,9 +163,7 @@ public class SectionService {
             throw new IllegalArgumentException("Selected employee is not a teacher!");
         }
 
-        Section section = sectionRepository.findById(new SectionId()
-                        .setClassTeacher(employeeId)
-                        .setSchoolClass(sectionId))
+        Section section = sectionRepository.findById(new SectionId(employeeId, sectionId))
                 .orElseThrow(() -> new RuntimeException("Section not found"));
         section.setClassTeacher(employee);
 

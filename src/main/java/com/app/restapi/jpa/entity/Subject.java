@@ -14,8 +14,11 @@ public class Subject {
 
     private String name;
 
-    @ManyToMany(mappedBy = "subjects")
-    private Set<SchoolClass> schoolClasses = new HashSet<>();
+//    @ManyToMany(mappedBy = "subjects")
+//    private Set<Section> sections = new HashSet<>();
+//
+//    @ManyToMany(mappedBy = "subjects")
+//    private Set<Employee> employees = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -35,12 +38,12 @@ public class Subject {
         return this;
     }
 
-    public Set<SchoolClass> getSchoolClasses() {
-        return schoolClasses;
-    }
-
-    public Subject setSchoolClasses(Set<SchoolClass> schoolClasses) {
-        this.schoolClasses = schoolClasses;
-        return this;
-    }
+//    public Set<Section> getSections() {
+//        return sections;
+//    }
+//
+//    public Subject setSections(Set<Section> sections) {
+//        this.sections = sections;
+//        return this;
+//    }
 }

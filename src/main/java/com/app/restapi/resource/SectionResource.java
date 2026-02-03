@@ -43,7 +43,7 @@ public class SectionResource {
     @PostMapping("/update")
     public ResponseEntity<SectionDto> updateSection(
             @RequestBody SectionDto section) {
-        return ResponseEntity.ok(sectionService.createClassSection(section));
+        return ResponseEntity.ok(sectionService.updateClassSection(section));
     }
 
     @PostMapping("/all")
@@ -51,12 +51,17 @@ public class SectionResource {
         return ResponseEntity.ok(sectionService.fetchSections(pagination));
     }
 
+    @PostMapping("/add-section-subject")
+    public ResponseEntity<SectionDto> assignSubjectToSection(@RequestBody SectionDto sectionDto) {
+        return ResponseEntity.ok(sectionService.assignSubjectsToSection(sectionDto));
+    }
+
     @PutMapping("/{classId}/assign-teacher/{employeeId}")
     public ResponseEntity<SectionDto> assignTeacher(
             @PathVariable Long classId,
             @PathVariable Long employeeId) {
 
-        return sectionRepository.findById(new SectionId().setSchoolClass(classId).setClassTeacher(employeeId)).map(section -> {
+        return sectionRepository.findById(new SectionId(classId, employeeId)).map(section -> {
             Employee teacher = employeeRepository.findById(employeeId)
                     .filter(e -> AppRole.TEACHER.equals(e.getRole()))
                     .orElseThrow(() -> new RuntimeException("Teacher not found or invalid role"));

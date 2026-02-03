@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/locations/**").permitAll()
                         .requestMatchers("/api/classes/**").permitAll()
                         .requestMatchers("/api/sections/**").permitAll()
+                        .requestMatchers("/api/subjects/**").permitAll()
                         .anyRequest().authenticated()
     		).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

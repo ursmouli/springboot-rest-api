@@ -1,5 +1,6 @@
 package com.app.restapi.service;
 
+import com.app.restapi.dto.SubjectDto;
 import com.app.restapi.jpa.entity.SchoolClass;
 import com.app.restapi.jpa.entity.Subject;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
@@ -22,13 +23,23 @@ public class SubjectService {
     }
 
     @Transactional
+    public SubjectDto addSubject(SubjectDto subjectDto) {
+
+        Subject subject = new Subject().setName(subjectDto.getName());
+
+        Subject savedSubject = subjectRepository.save(subject);
+
+        return new SubjectDto().setId(savedSubject.getId()).setName(savedSubject.getName());
+    }
+
+    @Transactional
     public void assignSubjectToClass(Long classId, Long subjectId) {
         SchoolClass schoolClass = schoolClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Class not found"));
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
 
-        schoolClass.addSubject(subject);
+//        schoolClass.addSubject(subject);
         // Saved automatically due to @Transactional
     }
 }

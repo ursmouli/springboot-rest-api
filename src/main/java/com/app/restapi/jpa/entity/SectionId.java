@@ -1,38 +1,55 @@
 package com.app.restapi.jpa.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
+import java.util.Objects;
 
+@Embeddable
 public class SectionId implements Serializable {
-    private Long schoolClass; // Must match the name in the Entity
-    private Long classTeacher; // Must match the name in the Entity
 
-    public SectionId(){}
+    @Column(name = "school_class_id")
+    private Long schoolClassId; // Must match the name in the Entity
 
-    public Long getSchoolClass() {
-        return schoolClass;
+    @Column(name = "class_teacher_id")
+    private Long classTeacherId; // Must match the name in the Entity
+
+    public SectionId() {}
+
+    public SectionId(Long schoolClassId, Long classTeacherId) {
+        this.schoolClassId = schoolClassId;
+        this.classTeacherId = classTeacherId;
     }
 
-    public SectionId setSchoolClass(Long schoolClass) {
-        this.schoolClass = schoolClass;
-        return this;
+    public Long getSchoolClassId() {
+        return schoolClassId;
     }
 
-    public Long getClassTeacher() {
-        return classTeacher;
+    public void setSchoolClassId(Long schoolClassId) {
+        this.schoolClassId = schoolClassId;
     }
 
-    public SectionId setClassTeacher(Long classTeacher) {
-        this.classTeacher = classTeacher;
-        return this;
+    public Long getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public void setClassTeacherId(Long classTeacherId) {
+        this.classTeacherId = classTeacherId;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this == o) return true;
+        if (getClass() != o.getClass()) return false;
+        SectionId that = (SectionId) o;
+        return Objects.equals(schoolClassId, that.schoolClassId)
+                && Objects.equals(classTeacherId, that.classTeacherId);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(schoolClassId, classTeacherId);
     }
 }
