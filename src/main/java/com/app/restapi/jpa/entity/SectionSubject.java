@@ -51,4 +51,13 @@ public class SectionSubject {
         this.subject = subject;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "SectionSubject{" +
+                "id=" + id +
+                ", section=" + section +
+                ", subject=" + subject +
+                '}';
+    }
 }

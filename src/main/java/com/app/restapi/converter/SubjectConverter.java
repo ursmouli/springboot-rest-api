@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class SubjectConverter implements GenericConverter<Subject, SubjectDto> {
 
     private final DepartmentConverter departmentConverter;
+
     public SubjectConverter(DepartmentConverter departmentConverter) {
         this.departmentConverter = departmentConverter;
     }
