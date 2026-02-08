@@ -1,0 +1,8 @@
+1 = UserRoleInitializer
+2 = AddressInitializer
+3 = StudentInitializer
+4 = EmployeeInitializer (some departments are initialized here)
+5 = SchoolClassInitializer
+6 = SectionInitializer
+7 = DepartmentInitializer
+8 = SubjectInitializer

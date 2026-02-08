@@ -14,6 +14,16 @@ public class Subject {
 
     private String name;
 
+    private String code;
+
+    private String description;
+
+    private int credits;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
 //    @ManyToMany(mappedBy = "subjects")
 //    private Set<Section> sections = new HashSet<>();
 //
@@ -38,7 +48,43 @@ public class Subject {
         return this;
     }
 
-//    public Set<Section> getSections() {
+    public String getCode() {
+        return code;
+    }
+
+    public Subject setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Subject setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public Subject setCredits(int credits) {
+        this.credits = credits;
+        return this;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Subject setDepartment(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    //    public Set<Section> getSections() {
 //        return sections;
 //    }
 //
