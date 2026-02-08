@@ -16,15 +16,25 @@ public class DepartmentResource {
         this.departmentService = departmentService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Void> add(@RequestBody DepartmentDto departmentDto) {
-        departmentService.saveDepartment(departmentDto);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/all")
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         List<DepartmentDto> departments = departmentService.getDepartments();
         return ResponseEntity.ok(departments);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<DepartmentDto> add(@RequestBody DepartmentDto departmentDto) {
+        return ResponseEntity.ok(departmentService.saveDepartment(departmentDto));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<DepartmentDto> update(@RequestBody DepartmentDto departmentDto) {
+        return ResponseEntity.ok(departmentService.updateDepartment(departmentDto));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        departmentService.deleteDepartment(id);
+        return ResponseEntity.ok().build();
     }
 }
