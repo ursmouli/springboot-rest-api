@@ -1,6 +1,7 @@
 package com.app.restapi.converter;
 
 import com.app.restapi.dto.SectionDto;
+import com.app.restapi.dto.SubjectDto;
 import com.app.restapi.jpa.entity.Section;
 import com.app.restapi.jpa.entity.SectionId;
 import org.springframework.stereotype.Component;

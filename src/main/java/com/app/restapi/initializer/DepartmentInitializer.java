@@ -20,15 +20,25 @@ public class DepartmentInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         DepartmentDto english = new DepartmentDto().setName("English").setCode("ENG").setDescription("English");
-        DepartmentDto science = new DepartmentDto().setName("Science").setCode("SC").setDescription("Science");
-        DepartmentDto computers = new DepartmentDto().setName("Computers").setCode("COMP").setDescription("Computers");
-        DepartmentDto mathematics = new DepartmentDto().setName("Mathematics").setCode("MATH").setDescription("Mathematics");
-        DepartmentDto social = new DepartmentDto().setName("Social").setCode("SO").setDescription("Social");
+        DepartmentDto science = new DepartmentDto().setName("Science").setCode("SCI").setDescription("Science");
+        DepartmentDto computers = new DepartmentDto().setName("Computers").setCode("COM").setDescription("Computers");
+        DepartmentDto mathematics = new DepartmentDto().setName("Mathematics").setCode("MAT").setDescription("Mathematics");
+        DepartmentDto social = new DepartmentDto().setName("Social").setCode("SOC").setDescription("Social");
+
+        DepartmentDto physics = new DepartmentDto().setName("Physics").setCode("PHY").setDescription("Physics");
+        DepartmentDto chemistry = new DepartmentDto().setName("Chemistry").setCode("CHE").setDescription("Chemistry");
+        DepartmentDto history = new DepartmentDto().setName("History").setCode("HIS").setDescription("History");
+        DepartmentDto geography = new DepartmentDto().setName("Geography").setCode("GEO").setDescription("Geography");
 
         departmentService.saveDepartment(english);
         departmentService.saveDepartment(science);
         departmentService.saveDepartment(computers);
         departmentService.saveDepartment(mathematics);
         departmentService.saveDepartment(social);
+
+        departmentService.saveDepartment(physics);
+        departmentService.saveDepartment(chemistry);
+        departmentService.saveDepartment(history);
+        departmentService.saveDepartment(geography);
     }
 }
