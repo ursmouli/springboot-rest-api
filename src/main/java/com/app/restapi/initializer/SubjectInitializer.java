@@ -56,10 +56,10 @@ public class SubjectInitializer implements CommandLineRunner {
                 .setDescription("Fundamental principles of physics")
                 .setDepartment(pD);
         SubjectDto chemistry = new SubjectDto()
-                .setCode("PHYS101")
-                .setName("Physics")
+                .setCode("CHEM101")
+                .setName("Chemistry")
                 .setCredits(100)
-                .setDescription("Fundamental principles of physics")
+                .setDescription("Basic concepts of chemistry")
                 .setDepartment(chD);
         SubjectDto geography = new SubjectDto()
                 .setCode("GEOG101")

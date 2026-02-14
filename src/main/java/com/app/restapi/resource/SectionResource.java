@@ -2,6 +2,7 @@ package com.app.restapi.resource;
 
 import com.app.restapi.dto.PaginationDto;
 import com.app.restapi.dto.SectionDto;
+import com.app.restapi.jpa.entity.SectionId;
 import com.app.restapi.service.SectionService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,16 @@ public class SectionResource {
     @PostMapping("/add-section-subject")
     public ResponseEntity<SectionDto> assignSubjectToSection(@RequestBody SectionDto sectionDto) {
         return ResponseEntity.ok(sectionService.assignSubjectsToSection(sectionDto));
+    }
+
+    @DeleteMapping("/remove-section-subject/{schoolClassId}/{classTeacherId}/{subjectId}")
+    public ResponseEntity<Void> removeSubjectFromSection(
+            @PathVariable Long schoolClassId,
+            @PathVariable Long classTeacherId,
+            @PathVariable Long subjectId
+    ) {
+        sectionService.removeSubjectFromSection(new SectionId(schoolClassId, classTeacherId),  subjectId);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{schoolClassId}/assign-teacher/{previousClassTeacher}/{newClassTeacherId}")

@@ -11,4 +11,7 @@ public interface SectionRepository extends JpaRepository<Section, SectionId>, Jp
     boolean existsBySchoolClassIdAndClassTeacherId(Long classId, Long teacherId);
 
     void deleteBySchoolClassIdAndClassTeacherId(Long classId, Long teacherId);
+
+    // Checks if any SectionSubject within the Section matches the Subject ID
+    boolean existsByIdAndSectionSubjects_Subject_Id(SectionId id, Long subjectId);
 }

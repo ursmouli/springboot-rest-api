@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,20 @@ public class SectionService {
         return sectionConverter.toDto(sectionRepository.save(entity));
     }
 
+    public void removeSubjectFromSection(SectionId sectionId, Long subjectId) {
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new RuntimeException("Section not found"));
+
+        boolean subjectExists = sectionRepository.existsByIdAndSectionSubjects_Subject_Id(sectionId, subjectId);
+
+        if (subjectExists) {
+            // Transactional should auto commit and save Section
+            section.getSectionSubjects().removeIf(ss -> ss.getSubject().getId().equals(subjectId));
+        } else {
+            log.error("Cannot remove subject from this section");
+        }
+    }
+
     public SectionDto assignSubjectsToSection(SectionDto sectionDto) {
 
         // get section
@@ -102,17 +117,26 @@ public class SectionService {
                 .findById(new SectionId(sectionDto.getSchoolClass().getId(), sectionDto.getClassTeacher().getId()))
                 .orElseThrow(() -> new RuntimeException("Section not found"));
 
-        // get subjects
-        List<Long> subjectIds = new ArrayList<>();
-
-        for (SubjectDto subjectDto : sectionDto.getSubjects()) {
-            subjectIds.add(subjectDto.getId());
-        }
-
-        List<Subject> subjects = subjectRepository.findAllById(subjectIds);
+        Set<SectionSubject> sectionSubjects = section.getSectionSubjects();
 
         // save subjects to section
         SectionId sectionId = new SectionId(section.getSchoolClass().getId(), section.getClassTeacher().getId());
+
+        // get subjects
+        List<Long> subjectIds = new ArrayList<>();
+
+        for (SectionSubjectDto subjectDto : sectionDto.getSectionSubjects()) {
+
+            if (CollectionUtils.isEmpty(sectionSubjects)) {
+                subjectIds.add(subjectDto.getSubject().getId());
+            } else {
+                if (sectionSubjects.stream().noneMatch(ss -> ss.getSubject().getId().equals(subjectDto.getSubject().getId()))) {
+                    subjectIds.add(subjectDto.getSubject().getId());
+                }
+            }
+        }
+
+        List<Subject> subjects = subjectRepository.findAllById(subjectIds);
 
         for (Subject subject : subjects) {
             SectionSubject sectionSubject = new SectionSubject();
