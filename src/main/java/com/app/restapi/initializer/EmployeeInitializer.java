@@ -77,11 +77,11 @@ public class EmployeeInitializer implements CommandLineRunner {
 
         List<AppRole> roles = Arrays.stream(AppRole.values()).toList();
 
-        Department engineering = new Department().setName("Engineering");
-        Department hr = new Department().setName("HR");
-        Department finance = new Department().setName("Finance");
-        Department marketing = new Department().setName("Marketing");
-        Department operations = new Department().setName("Operations");
+        Department engineering = new Department().setName("Engineering").setCode("ENGINEERING").setDescription("Engineering Department");
+        Department hr = new Department().setName("HR").setCode("HR").setDescription("HR Department");
+        Department finance = new Department().setName("Finance").setCode("FINANCE").setDescription("Finance Department");
+        Department marketing = new Department().setName("Marketing").setCode("MARKETING").setDescription("Marketing Department");
+        Department operations = new Department().setName("Operations").setCode("OPERATIONS").setDescription("Operations Department");
 
         List<Department> departments = departmentRepository.saveAll(List.of(
                 engineering, hr, finance, marketing, operations));

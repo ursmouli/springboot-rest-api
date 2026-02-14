@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "school_class")
 public class SchoolClass {
 
     @Id
@@ -16,19 +17,14 @@ public class SchoolClass {
 
     private String academicYear;
 
-    @ManyToMany
-    @JoinTable(
-            name = "class_subjects",
-            joinColumns = @JoinColumn(name = "class_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id")
-    )
-    private Set<Subject> subjects = new HashSet<>();
+//    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
+//    private Set<Section> sections = new HashSet<>();
 
     // helper method
-    public void addSubject(Subject subject) {
-        this.subjects.add(subject);
-        subject.getSchoolClasses().add(this);
-    }
+//    public void addSubject(Subject subject) {
+//        this.subjects.add(subject);
+//        subject.getSchoolClasses().add(this);
+//    }
 
     public Long getId() {
         return id;
@@ -57,12 +53,12 @@ public class SchoolClass {
         return this;
     }
 
-    public Set<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public SchoolClass setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
-        return this;
-    }
+//    public Set<Section> getSections() {
+//        return sections;
+//    }
+//
+//    public SchoolClass setSections(Set<Section> sections) {
+//        this.sections = sections;
+//        return this;
+//    }
 }

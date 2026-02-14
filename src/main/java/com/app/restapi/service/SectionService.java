@@ -1,22 +1,16 @@
 package com.app.restapi.service;
 
 import com.app.restapi.converter.SectionConverter;
-import com.app.restapi.dto.PaginationDto;
-import com.app.restapi.dto.SchoolClassDto;
-import com.app.restapi.dto.SectionDto;
-import com.app.restapi.jpa.entity.Employee;
-import com.app.restapi.jpa.entity.SchoolClass;
-import com.app.restapi.jpa.entity.Section;
-import com.app.restapi.jpa.entity.SectionId;
+import com.app.restapi.dto.*;
+import com.app.restapi.jpa.entity.*;
 import com.app.restapi.jpa.repo.EmployeeRepository;
 import com.app.restapi.jpa.repo.SchoolClassRepository;
 import com.app.restapi.jpa.repo.SectionRepository;
-import com.app.restapi.jpa.specifications.SchoolClassSpecification;
+import com.app.restapi.jpa.repo.SubjectRepository;
 import com.app.restapi.jpa.specifications.SectionSpecification;
 import com.app.restapi.model.AppRole;
 import com.app.restapi.model.SortDirection;
 import com.app.restapi.util.EntityUtil;
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,13 +18,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class SectionService {
 
     private static final Logger log = LoggerFactory.getLogger(SectionService.class);
@@ -41,24 +38,24 @@ public class SectionService {
     private final SchoolClassRepository schoolClassRepository;
     private final SectionConverter sectionConverter;
     private final EmployeeRepository employeeRepository;
+    private final SubjectRepository subjectRepository;
 
     public SectionService(SectionRepository sectionRepository,
                           SchoolClassRepository schoolClassRepository,
                           SectionConverter sectionConverter,
-                          EmployeeRepository employeeRepository) {
+                          EmployeeRepository employeeRepository,
+                          SubjectRepository subjectRepository) {
         this.sectionRepository = sectionRepository;
         this.schoolClassRepository = schoolClassRepository;
         this.sectionConverter = sectionConverter;
         this.employeeRepository = employeeRepository;
+        this.subjectRepository = subjectRepository;
     }
 
-    //        return schoolClassRepository.findById(classId).map(schoolClass -> {
-//            section.setSchoolClass(schoolClass); // Link Section to Class
-//            Section savedSection = sectionRepository.save(section);
-//            return new ResponseEntity<>(sectionConverter.toDto(savedSection), HttpStatus.CREATED);
-//        }).orElse(ResponseEntity.notFound().build());
+    public List<SectionDto> fetchAll() {
+        return sectionConverter.toDtoList(sectionRepository.findAll());
+    }
 
-    @Transactional
     public SectionDto updateClassSection(SectionDto section) {
         Section entity = sectionConverter.toEntity(section);
 
@@ -77,12 +74,12 @@ public class SectionService {
         return sectionConverter.toDto(sectionRepository.save(entity));
     }
 
-    @Transactional
     public SectionDto createClassSection(SectionDto section) {
 
         Section entity = sectionConverter.toEntity(section);
 
-        entity.setSchoolClass(schoolClassRepository.getReferenceById(section.getSchoolClass().getId()));
+        SchoolClass schoolClass = schoolClassRepository.getReferenceById(section.getSchoolClass().getId());
+        entity.setSchoolClass(schoolClass);
 
         if (sectionRepository.existsBySchoolClassIdAndClassTeacherId(section.getSchoolClass().getId(), section.getClassTeacher().getId())) {
             throw new IllegalStateException("This teacher is already assigned to class " + section.getSchoolClass().getId());
@@ -94,29 +91,76 @@ public class SectionService {
 
         entity.setClassTeacher(employee);
 
+        entity.setId(new SectionId(schoolClass.getId(), section.getClassTeacher().getId()));
+
         return sectionConverter.toDto(sectionRepository.save(entity));
     }
 
-    @Transactional
-    public Section assignTeacherToSection(Long sectionId, Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-
-        if (!AppRole.TEACHER.equals(employee.getRole())) {
-            throw new IllegalArgumentException("Selected employee is not a teacher!");
-        }
-
-        Section section = sectionRepository.findById(new SectionId()
-                        .setClassTeacher(employeeId)
-                        .setSchoolClass(sectionId))
+    public void removeSubjectFromSection(SectionId sectionId, Long subjectId) {
+        Section section = sectionRepository.findById(sectionId)
                 .orElseThrow(() -> new RuntimeException("Section not found"));
-        section.setClassTeacher(employee);
 
-        return sectionRepository.save(section);
+        boolean subjectExists = sectionRepository.existsByIdAndSectionSubjects_Subject_Id(sectionId, subjectId);
+
+        if (subjectExists) {
+            // Transactional should auto commit and save Section
+            section.getSectionSubjects().removeIf(ss -> ss.getSubject().getId().equals(subjectId));
+        } else {
+            log.error("Cannot remove subject from this section");
+        }
     }
 
-    @Transactional
+    public SectionDto assignSubjectsToSection(SectionDto sectionDto) {
+
+        // get section
+        Section section = sectionRepository
+                .findById(new SectionId(sectionDto.getSchoolClass().getId(), sectionDto.getClassTeacher().getId()))
+                .orElseThrow(() -> new RuntimeException("Section not found"));
+
+        Set<SectionSubject> sectionSubjects = section.getSectionSubjects();
+
+        // save subjects to section
+        SectionId sectionId = new SectionId(section.getSchoolClass().getId(), section.getClassTeacher().getId());
+
+        // get subjects
+        List<Long> subjectIds = new ArrayList<>();
+
+        for (SectionSubjectDto subjectDto : sectionDto.getSectionSubjects()) {
+
+            if (CollectionUtils.isEmpty(sectionSubjects)) {
+                subjectIds.add(subjectDto.getSubject().getId());
+            } else {
+                if (sectionSubjects.stream().noneMatch(ss -> ss.getSubject().getId().equals(subjectDto.getSubject().getId()))) {
+                    subjectIds.add(subjectDto.getSubject().getId());
+                }
+            }
+        }
+
+        List<Subject> subjects = subjectRepository.findAllById(subjectIds);
+
+        for (Subject subject : subjects) {
+            SectionSubject sectionSubject = new SectionSubject();
+            sectionSubject.setId(new SectionSubjectId(sectionId, subject.getId()));
+            sectionSubject.setSection(section);
+            sectionSubject.setSubject(subject);
+
+            section.getSectionSubjects().add(sectionSubject);
+        }
+
+        Section savedSection = sectionRepository.save(section);
+
+        Set<SectionSubject> savedSectionSubjects = savedSection.getSectionSubjects();
+
+        log.debug("Saved section subjects: {}", savedSectionSubjects);
+
+        return sectionConverter.toDto(section);
+    }
+
     public void deleteClassSection(Long classId, Long classTeacherId) {
+
+        if (classId == null || classTeacherId == null) {
+            throw new RuntimeException("ClassId and ClassTeacherId cannot be null");
+        }
 
         // throw error if classId doesn't exist
         schoolClassRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
@@ -127,7 +171,21 @@ public class SectionService {
         sectionRepository.deleteBySchoolClassIdAndClassTeacherId(classId, classTeacherId);
     }
 
-    @Transactional
+    public SectionDto assignTeacherToClassSection(Long schoolClassId, Long previousClassTeacher, Long newClassTeacherId) {
+        if (schoolClassId == null || previousClassTeacher == null || newClassTeacherId == null) {
+            throw new RuntimeException("SectionId and ClassTeacherId cannot be null");
+        }
+
+        return sectionRepository.findById(new SectionId(schoolClassId, previousClassTeacher)).map(section -> {
+            Employee teacher = employeeRepository.findById(newClassTeacherId)
+                    .filter(e -> AppRole.TEACHER.equals(e.getRole()))
+                    .orElseThrow(() -> new RuntimeException("Teacher not found or invalid role"));
+
+            section.setClassTeacher(teacher);
+            return sectionConverter.toDto(sectionRepository.save(section));
+        }).orElse(null);
+    }
+
     public Page<SectionDto> fetchSections(PaginationDto pagination) {
 
         log.debug("pagination: {}", pagination);
