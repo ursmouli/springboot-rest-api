@@ -42,9 +42,14 @@ public class VehicleService {
         return vehicleConverter.toDto(vehicleRepository.save(vehicle));
     }
 
-    public Vehicle getVehicleById(Long id) {
+    private Vehicle getVehicleById(Long id) {
         return vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found with ID: " + id));
+    }
+
+    public VehicleDto getById(Long id) {
+        Vehicle vehicle = getVehicleById(id);
+        return vehicleConverter.toDto(vehicle);
     }
 
     public void deleteVehicle(Long id) {

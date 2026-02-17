@@ -5,6 +5,12 @@ public class VehicleDto {
     private String registrationNumber;
     private Integer capacity;
     private String driverName;
+    private String driverContact;
+    private String drivingLicense;
+    private String status;
+    private String make;
+    private String model;
+    private String year;
 
     public Long getId() {
         return id;

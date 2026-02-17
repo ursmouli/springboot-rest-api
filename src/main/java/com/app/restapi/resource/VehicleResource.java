@@ -3,6 +3,7 @@ package com.app.restapi.resource;
 import com.app.restapi.dto.VehicleDto;
 import com.app.restapi.jpa.entity.Vehicle;
 import com.app.restapi.service.VehicleService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,13 @@ public class VehicleResource {
     private VehicleService vehicleService;
 
     @GetMapping("/all")
-    public List<VehicleDto> getAll() {
-        return vehicleService.getAllVehicles();
+    public ResponseEntity<List<VehicleDto>> getAll() {
+        return ResponseEntity.ok(vehicleService.getAllVehicles());
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<VehicleDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.getById(id));
     }
 
     @PostMapping("/add")
