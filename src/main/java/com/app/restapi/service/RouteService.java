@@ -56,6 +56,10 @@ public class RouteService {
         this.studentConverter = studentConverter;
     }
 
+    public RouteDto getRouteById(Long id) {
+        return routeConverter.toDto(getById(id));
+    }
+
     public RouteDto add(RouteDto routeDto) {
         Route route = routeConverter.toEntity(routeDto);
 
@@ -68,7 +72,7 @@ public class RouteService {
     }
 
     public RouteDto update(Long id, RouteDto routeDto) {
-        Route existingRoute = getRouteById(id);
+        Route existingRoute = getById(id);
 
         existingRoute.setName(routeDto.getName());
         existingRoute.setDescription(routeDto.getDescription());
@@ -96,12 +100,10 @@ public class RouteService {
         return routeConverter.toDtoList(routeRepository.findAll());
     }
 
-    public Route getRouteById(Long id) {
-        return routeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
+
 
     public void deleteRouteById(Long id) {
-        Route route = getRouteById(id);
+        Route route = getById(id);
 
         boolean hasStudents = route.getPickupPoints().stream()
                 .anyMatch(stop -> !stop.getStudents().isEmpty());
@@ -140,5 +142,9 @@ public class RouteService {
                 .and(RouteSpecification.hasDriver(driver));
 
         return routeRepository.findAll(spec);
+    }
+
+    private Route getById(Long id) {
+        return routeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }

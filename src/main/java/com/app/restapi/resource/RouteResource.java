@@ -36,6 +36,11 @@ public class RouteResource {
         return ResponseEntity.ok(routeService.findAll());
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<RouteDto> getRouteById(@PathVariable Long id) {
+        return ResponseEntity.ok(routeService.getRouteById(id));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<RouteDto> add(@RequestBody RouteDto route) {
         return new ResponseEntity<>(routeService.add(route), HttpStatus.CREATED);
