@@ -96,6 +96,28 @@ public class PickupPointService {
         pickupPointRepository.deleteById(id);
     }
 
+    public List<PickupPointDto> fetchRoutePickupPoints(Long routeId) {
+
+        List<PickupPoint> byRouteId = pickupPointRepository.findByRouteIdOrderBySequenceOrderAsc(routeId);
+
+        if (!CollectionUtils.isEmpty(byRouteId)) {
+            return pickupPointConverter.toDtoList(byRouteId);
+        }
+
+        return List.of();
+    }
+
+    public void deleteStudentFromPickupPoint(Long studentId, Long stopId) {
+        PickupPoint pickupPoint = getById(stopId);
+
+        Student student = pickupPoint
+                .getStudents()
+                .stream()
+                .filter(s -> s.getId().equals(studentId)).findFirst().orElseThrow(EntityNotFoundException::new);
+
+        pickupPoint.removeStudent(student);
+    }
+
     private PickupPoint getById(Long id) {
         return pickupPointRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pickup Point with id: " + id + " not found!"));

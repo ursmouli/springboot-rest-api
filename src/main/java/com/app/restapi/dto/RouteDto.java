@@ -1,5 +1,8 @@
 package com.app.restapi.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RouteDto {
     private Long id;
     private String name;
@@ -8,6 +11,8 @@ public class RouteDto {
     private Double distance;
 
     private VehicleDto vehicle;
+
+    private List<PickupPointDto> pickupPoints = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -60,6 +65,15 @@ public class RouteDto {
 
     public RouteDto setVehicle(VehicleDto vehicle) {
         this.vehicle = vehicle;
+        return this;
+    }
+
+    public List<PickupPointDto> getPickupPoints() {
+        return pickupPoints;
+    }
+
+    public RouteDto setPickupPoints(List<PickupPointDto> pickupPoints) {
+        this.pickupPoints = pickupPoints;
         return this;
     }
 }

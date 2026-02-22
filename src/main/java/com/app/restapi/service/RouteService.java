@@ -3,6 +3,7 @@ package com.app.restapi.service;
 import com.app.restapi.converter.RouteConverter;
 import com.app.restapi.converter.StudentConverter;
 import com.app.restapi.converter.VehicleConverter;
+import com.app.restapi.dto.PickupPointDto;
 import com.app.restapi.dto.RouteDto;
 import com.app.restapi.dto.StudentDto;
 import com.app.restapi.jpa.entity.PickupPoint;
@@ -21,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,6 +60,26 @@ public class RouteService {
 
     public RouteDto getRouteById(Long id) {
         return routeConverter.toDto(getById(id));
+    }
+
+    public RouteDto fetchPickupPointsStudentsByRouteId(Long id) {
+        Route route = getById(id);
+
+        List<PickupPointDto> pickupPoints = new ArrayList<>();
+        for (PickupPoint pickupPoint : route.getPickupPoints()) {
+            List<StudentDto> students = studentConverter.toDtoList(pickupPoint.getStudents());
+            pickupPoints.add(new PickupPointDto()
+                    .setId(pickupPoint.getId())
+                    .setSequenceOrder(pickupPoint.getSequenceOrder())
+                    .setStopName(pickupPoint.getStopName())
+                    .setExpectedArrivalTime(pickupPoint.getExpectedArrivalTime())
+                    .setStudents(students));
+        }
+
+        RouteDto routeDto = routeConverter.toDto(route);
+        routeDto.setPickupPoints(pickupPoints);
+
+        return routeDto;
     }
 
     public RouteDto add(RouteDto routeDto) {
@@ -99,8 +121,6 @@ public class RouteService {
     public List<RouteDto> findAll() {
         return routeConverter.toDtoList(routeRepository.findAll());
     }
-
-
 
     public void deleteRouteById(Long id) {
         Route route = getById(id);

@@ -37,7 +37,7 @@ public class PickupPointResource {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<PickupPointDto> update(@RequestBody Long id, @RequestBody PickupPointDto pickupPoint) {
+    public ResponseEntity<PickupPointDto> update(@PathVariable Long id, @RequestBody PickupPointDto pickupPoint) {
         return ResponseEntity.ok(pickupPointService.update(id, pickupPoint));
     }
 
@@ -47,6 +47,21 @@ public class PickupPointResource {
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "Pickup point deleted successfully");
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find/route/{routeId}")
+    public ResponseEntity<List<PickupPointDto>> getStopsInRoute(@PathVariable Long routeId) {
+        return ResponseEntity.ok(pickupPointService.fetchRoutePickupPoints(routeId));
+    }
+
+    @DeleteMapping("/delete-assigned-stop/{studentId}/{stopId}")
+    public ResponseEntity<Map<String, String>> deleteStudentFromRoute(@PathVariable Long studentId, @PathVariable Long stopId) {
+        pickupPointService.deleteStudentFromPickupPoint(studentId, stopId);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Student remove from pickup point successfully");
 
         return ResponseEntity.ok(response);
     }

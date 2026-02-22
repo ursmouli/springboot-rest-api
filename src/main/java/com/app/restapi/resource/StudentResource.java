@@ -30,6 +30,11 @@ public class StudentResource {
 		this.studentService = studentService;
 	}
 
+	@GetMapping("/all")
+	public ResponseEntity<List<StudentDto>> findAll() {
+		return ResponseEntity.ok(studentService.getAllStudents());
+	}
+
 	@PostMapping("/all")
 	public ResponseEntity<Page<StudentDto>> getAll(@RequestBody @Validated PaginationDto paginationDto) {
 		log.debug("pagination: {}", paginationDto);

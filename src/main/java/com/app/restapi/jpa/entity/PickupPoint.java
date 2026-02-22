@@ -77,4 +77,9 @@ public class PickupPoint {
         this.students = students;
         return this;
     }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
+        student.setPickupPoint(null); // Clear the back-reference
+    }
 }

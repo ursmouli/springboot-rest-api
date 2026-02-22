@@ -31,6 +31,11 @@ public class RouteResource {
         return ResponseEntity.ok(routeService.assignStudentToRoute(studentId, stopId));
     }
 
+    @GetMapping("/pickup-point-students/{routeId}")
+    public ResponseEntity<RouteDto> getPickupPointsStudentsByRouteId(@PathVariable Long routeId) {
+        return ResponseEntity.ok(routeService.fetchPickupPointsStudentsByRouteId(routeId));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<RouteDto>> getAllRoutes() {
         return ResponseEntity.ok(routeService.findAll());
