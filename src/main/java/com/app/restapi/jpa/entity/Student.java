@@ -47,6 +47,10 @@ public class Student {
     
     private boolean sameAsPermanentAddress;
 
+	@ManyToOne
+	@JoinColumn(name = "pickup_point_id")
+	private PickupPoint pickupPoint;
+
 	@PrePersist
 	public void generateRegistrationNumber() {
 		// Example logic: REG-2026-RANDOM
@@ -162,6 +166,15 @@ public class Student {
 
 	public Student setGender(String gender) {
 		this.gender = gender;
+		return this;
+	}
+
+	public PickupPoint getPickupPoint() {
+		return pickupPoint;
+	}
+
+	public Student setPickupPoint(PickupPoint pickupPoint) {
+		this.pickupPoint = pickupPoint;
 		return this;
 	}
 }

@@ -1,8 +1,7 @@
 package com.app.restapi.dto;
 
 import com.app.restapi.model.SortDirection;
-
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 public class PaginationDto {
 

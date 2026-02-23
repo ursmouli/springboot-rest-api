@@ -1,6 +1,7 @@
 package com.app.restapi.service;
 
 import java.time.Year;
+import java.util.List;
 import java.util.Set;
 
 import com.app.restapi.converter.StudentConverter;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
+@Transactional
 public class StudentService {
 	private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
@@ -39,7 +41,6 @@ public class StudentService {
 		this.studentConverter = studentConverter;
 	}
 
-	@Transactional
 	public StudentDto saveStudent(StudentDto studentDto) {
 		final Student student = studentConverter.toEntity(studentDto);
 
@@ -67,7 +68,6 @@ public class StudentService {
 		return studentConverter.toDto(dbStudent);
 	}
 
-	@Transactional
 	public StudentDto getStudentByRollNumber(String rollNumber) {
 		Student student = studentRepository.findByRollNumber(rollNumber)
 				.orElseThrow(() -> new StudentNotFoundException(
@@ -76,7 +76,10 @@ public class StudentService {
 		return studentConverter.toDto(student);
 	}
 
-	@Transactional
+	public List<StudentDto> getAllStudents() {
+		return studentConverter.toDtoList(studentRepository.findAll());
+	}
+
 	public Page<StudentDto> getStudents(PaginationDto pagination) {
 		log.debug("pagination: {}", pagination);
 		if (!ALLOWED_SORT_FIELDS.contains(pagination.getSortField())) {

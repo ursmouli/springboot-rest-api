@@ -34,6 +34,11 @@ public class SecurityConfiguration {
                     .disable())
     		.authorizeHttpRequests((req) -> 
     			req
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/students/**").permitAll()
@@ -45,6 +50,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/sections/**").permitAll()
                         .requestMatchers("/api/subjects/**").permitAll()
                         .requestMatchers("/api/departments/**").permitAll()
+                        .requestMatchers("/api/route/**").permitAll()
+                        .requestMatchers("/api/pickup-point/**").permitAll()
+                        .requestMatchers("/api/vehicle/**").permitAll()
                         .anyRequest().authenticated()
     		).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
