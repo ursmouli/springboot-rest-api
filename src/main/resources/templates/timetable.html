@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; margin: 30px; color: #333; }
+        .header { text-align: center; border-bottom: 2px solid #444; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #f2f2f2; color: #444; padding: 12px; border: 1px solid #ddd; }
+        td { padding: 10px; border: 1px solid #ddd; text-align: center; font-size: 14px; }
+        .day-column { font-weight: bold; background-color: #fafafa; width: 15%; }
+        .footer { margin-top: 30px; font-size: 10px; text-align: right; color: #888; }
+    </style>
+    <title>Timetable</title>
+</head>
+<body>
+<div class="header">
+    <h1 th:text="'Section: ' + ${sectionName}">Section Name</h1>
+    <p>Weekly Class Schedule</p>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Day</th>
+        <th th:each="i : ${#numbers.sequence(1, 8)}" th:text="'P' + ${i}">P1</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${entries}">
+        <td class="day-column" th:text="${row.dayOfWeek}">Monday</td>
+
+        <td th:each="i : ${#numbers.sequence(1, 8)}">
+            <div th:if="${row.periods.containsKey(i)}" th:with="details=${row.periods.get(i)}">
+                <div class="subject" th:text="${details.subjectName}">Math</div>
+                <div class="teacher" th:text="${details.teacherName}">Dr. Aris</div>
+                <div class="room" th:text="${details.classroom}">R302</div>
+            </div>
+
+            <div th:unless="${row.periods.containsKey(i)}" class="empty-cell">-</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    Generated on: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}"></span>
+</div>
+</body>
+</html>

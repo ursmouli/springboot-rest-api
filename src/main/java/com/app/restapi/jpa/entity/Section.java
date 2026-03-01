@@ -3,6 +3,7 @@ package com.app.restapi.jpa.entity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +33,9 @@ public class Section {
             orphanRemoval = true
     )
     private Set<SectionSubject> sectionSubjects = new HashSet<>();
+
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
+    private List<TimetableEntry> timetableEntries;
 
     public SectionId getId() {
         return id;
@@ -75,6 +79,15 @@ public class Section {
 
     public Section setSectionSubjects(Set<SectionSubject> sectionSubjects) {
         this.sectionSubjects = sectionSubjects;
+        return this;
+    }
+
+    public List<TimetableEntry> getTimetableEntries() {
+        return timetableEntries;
+    }
+
+    public Section setTimetableEntries(List<TimetableEntry> timetableEntries) {
+        this.timetableEntries = timetableEntries;
         return this;
     }
 }

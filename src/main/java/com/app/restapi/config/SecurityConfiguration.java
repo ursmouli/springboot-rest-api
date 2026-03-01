@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/route/**").permitAll()
                         .requestMatchers("/api/pickup-point/**").permitAll()
                         .requestMatchers("/api/vehicle/**").permitAll()
+                        .requestMatchers("/api/timetable/**").permitAll()
                         .anyRequest().authenticated()
     		).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
     		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
